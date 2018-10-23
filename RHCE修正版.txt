@@ -1,0 +1,592 @@
+ 上 午------RHSCA
+Hostname：station.rhce.cc
+IP address:192.168.122.100
+Netmask:255.255.255.0
+Gatewav:192.168.122.1
+NameServer:192.168.122.10
+
+Root 密码：redhat
+0，修改物理机密码
+	按‘e’键，移动到linux行后+init=/bin/sh，删除前两个字母‘rhgb quiet’ctrl+x ，等待机器启动
+	mount -o remount.rw /
+	echo redhat| passwd --stdin root
+	touch /.autorelabel
+	exec /sbin/init
+	出现rhel时等待，知道出现登陆界面。
+
+1,SELinux 必须运行在Enforcing模式下。
+	getenforce
+	setenforce 1
+	vim /etc/selinux/config
+	SELINUX=enforcing
+	wq
+
+2，配置YUM源，所使用地址：ftp://server.rhce.cc/dvd作为默认源。
+	vim /etc/yum.repos.d/aa.repo
+	[rhce]
+	name=rhce
+	baseurl=ftp://server.rhce.cc/dvd
+	enable=1
+	gpgcheck=0
+	wq
+	yum install gcc -y
+
+3，调整逻辑卷vo的大小，为290M，确保这个文件系统的内容依然完整。
+	lvs
+	lvextend -L 290M /dev/vg0/vo
+	xfs_gorwfs /dev/vg0/vo 
+	#resize2fs /dev/vg0/vo
+	df -hT
+
+4，创建adminuser组，并创建用户natasha，附属组adminuser。并创建用户harry，附属组adminuser。并创建用户sarah，在系统上不能访问交换shell，且不是adminuser成员，密码皆为redhat。
+	groupadd adminuser
+	useradd -G adminuser natasha
+	useradd -G adminuser harry
+	useradd -s /sbin/nologin sarah
+	echo redhat | passwd --stdin natasha
+	echo redhat | passwd --stdin harry
+	echo redhat | passwd --stdin sarah
+	
+5，复制/etc/fstab到/var/tmp/fstab,配置/var/tmp/fstab的权限如下
+文件/var/tmp/fstab所有者是root
+文件/var/tmp/fstab属于root组
+文件/var/tmp/fstab不能被任何用户执行用户
+用户natasha可读可写，用户harry不能读也不能写
+所以其他用户可读
+	cp /etc/fstab /var/tmp/fstab
+	ls -ld /var/tmp/fstab
+	chmod o-x /var/tmp/fstab
+	setfacl -m u:natasha:rw- /var/tmp/fstab
+	setfacl -m u:harry:--- /var/tmp/fstab
+
+
+6,用户natasha配置一个cron.job。每天14：23运行，执行/bin/echo hiya
+	crontab -e -u natasha
+	23 14 * * * /bin/echo hiya
+	X
+	crontab -u natasha
+	
+
+7,创建目录/home/admins,属组adminuser，对组可写可读可执行，但其他用户不行，且在/home/admins下创建的任何文件属组自动设置为adminuser。
+	mkdir /home/admins
+	chgrp adminuser /home/admins
+	ls -ld /home/admins
+	chmod g+rw /home/admins
+	chmod o-rx /home/admins
+	chmod g+s /home/admins
+	ls -ld /home/admins
+
+8，从http://rhgls.rhce.cc/pub/updates 安装合适的内核更新，开机启动。
+	yum install wget -y
+	#firefox http://rhgls.rhce.cc/pub/updates
+	#选中kernel内核，链接另存为，存到root目录下。
+	yum list wget
+	yum install wget -y
+	wget http://rhgls.rhce.cc/pub/updates/kernel*
+	rpm -ivh kernel*
+
+9,提供LDAP验证服务，证书http://rhgls.rhce.cc/pub/domain1.crt，配置后ldapuser11可登录你的系统但没有家目录，密码是redhat。
+	yum list auth*
+	yum install authconfig-gtk.x86_64 -y
+	authconfig-gtk &
+	选LDAP
+	id ldapuser11
+	su -ldapuser11
+	
+
+10，配置系统使它是rhgls.rhce.cc（真机）的一个NTP客户。
+	yum list system-config-date -y
+	yum install system-config-date -y
+	system-config-date &
+	
+删除所有NTP服务>添加‘rhgls.rhcce.cc’确定
+
+11，配置autofs自动挂载LDAP用户的家目录，host.rhce.cc使用NFS共享了/home/guests给你的系统，并设好用户ldapuser11的家目录为host.rhce.cc：/home/guests/ldapuser11，使自动挂载到本地/home/guests下面的/home/guests/ldapuser11，家目录必须对用户可写，密码：redhat。
+	yum install autofs -y
+	getent passwd ldapuser11   #查找ldapuser11的家目录
+	vim /etc/auto.master
+	#/misc /etc/auto.misc
+	+
+	/home/guest /etc/auto.aa
+	wq
+	cp /etc/auto.misc /etc/auto.aa
+	vim /etc/auto.aa
+	+
+	ldapuser11 -fstype=nfs,rw,vres=3 hostrhce.cc:/home/guest/ldapuser11
+	wq
+	systemctl restart autofs
+	systemctl enable autofs
+	su -ldapuser11
+	exit
+	
+12,创建用户alex，uid：3400，密码redhat。
+	useradd -u 3400 alex
+	echo redhat | passwd --stdin alex
+
+13,增加一个512M交换分区。
+	fdisk -l /dev/vda
+	fdisk /dev/vda   创建512M的分区
+	partprobe /dev/vda
+	swapon -s
+	mkswap /dev/vda5
+	swapon /dev/vda5
+	vim /etc/fstab
+	+/dev/vda5 swap swap defaults 0 0
+	wq
+	
+
+14,找出所有者是ira的文件，并拷贝到/root/findresults目录。
+	cd /root/
+	mkdir findresults
+	find / -user ira -exec cp -a {} findresults/ \;
+	
+
+15,在/usr/share/dict/words中找到含有seismic的行，并复制到/root/lines。
+	grep seismic /usr/share/dict/works >  /root/lines
+	
+16,创建/root/backup.tar.bz2备份，内容为/usr/local，使用bzip2压缩。
+	yum install bzip2
+	cd /usr/local
+	tar jcvf /root/backup.tar.bz2 *   #bzip2
+	ls /opt/
+	tar jxvf backup.tar.bz2 -C /opt/
+	rm -rf /opt/*
+	
+
+17,创建逻辑卷50个扩展大小，属于卷组datastore，每个扩展16MiB，使用ext3格式化，知道挂载到/nmt/database
+	fdisk /dev/vda   #创建一个G的分区
+	wq
+	partprobe /dev/vda
+	vgcreate -s 16M batestore /dev/vda6
+	lvcreate -l 50 -n datebase batestore
+	mkfs.ext3 /dev/datestore/datebase
+	mkdir /nmt/datebase
+	vim /etc/fstab
+	+/dev/datestore/datebase /nmt/datebase ext3 defaults 0 0
+	wq
+	mount -a
+	df -hT
+----------------------------------------------------------------------------------------------------------------------
+-------下午-----RHCE
+
+1.配置 SELinux SELinux 必须在两个系统 system1 和 system2 中运行于 Enforcing 模式
+	getenforce
+	setenforce 1
+	vim /etc/selinux/config
+	SELINUX=enforcing
+	wq
+
+
+2.配置SSH 访问 按以下要求配置 SSH 访问: 用户能够从域 rhce.cc 内的客户端通过 SSH 远程访问您的两个虚拟机系统 在域 my133t.org 内的客户端不能访问您的两个虚拟机系统
+	host system1.rhce.cc
+	vim /etc/host.allow
+	+
+	sshd : 192.168.122.0/255.255.255.0 #网关不能使用/24简写
+	wq
+	vim /etc/host.deny
+	+	
+	sshd : .my133t.org
+	wq
+	scp /etc/host.deny /etc/host.allow system2.rhce.cc:/etc/
+
+
+3.自定义用户环境 在系统 system1 和 system2 上创建自定义命令名为 qstat 此自定义命令将执行以下命令: /bin/ps-Aopid,tt,user,fname,rsz 此命令对系统中所有用户有效。
+	vim /etc/bashrc
+	最后行
+	+	
+	alias qstat='/bin/ps -Ao……‘
+	wq
+	source /etc/bashrc
+	qstat
+	scp /etc/bashrc /system2.rhce.cc:/etc/
+
+4.配置端口转发 在系统 system1 配置端口转发， 要求如下： 在 192.168.122.0/24 网络中的系统， 访问 system1 的本地端口 5423 将被转发到 80 此设置必须永久有效
+	#firewall-cmd --list-rich-rule #查是否有富规则
+	#firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 forward-port port=5423 protocol=tcp to-port=80' --permanent
+	firewall-cmd --permanent --zone=public --add-forward-port=port=5423:proto=tcp:toport=80
+	firewall-cmd --reload
+	firewall-cmd --zone=public --list-all
+	#防火墙策略请翻笔记 
+	#不同指令请看附件
+
+5.配置聚合链路 在 system1.rhce.cc 和 system2.rhce.cc 之间按以下要求配置一个链路： 此链路使用接口 eth1 和 eth2 此链路在一个接口失效时仍然能工作 此链路在 system1 使用下面的地址 172.16.11.25/255.255.255.0 此链路在 system2 使用下面的地址 172.16.11.35/255.255.255.0 此链路在系统重启之后依然保持正常状态
+	man teamd.conf  #/example→n  ,找到'{"runner":{"name":"activebackup"}}'
+	nmcli connection add type team con-name team0 ifname team0 config {"runner":{"name":"activebackup"}}'
+	nmcli connection add type team-slave ifname eth1 master team0
+	nmcli connection add type team-slave ifname eth2 master team0
+	nmcli connection modify team0 ipv4.method manual ipv4.addresses 192.168.1.1/24 conection.autoconnect yes
+	nmcli connection up team-slave-eth1
+	nmcli connection up team-slave-eth2
+	nmcli connection up team0
+	vim /etc/sysconfig/network-script/ifcfg-team0
+	ONBOOT=yes
+	wq
+	vim /etc/sysconfig/network-sripts/ifcfg-eth1
+	ONBOOT=yes
+	wq
+	vim /etc/sysconfig/network-sripts/ifcfg-eth2
+	ONBOOT=yes
+	wq
+	systemctl restart network
+	
+
+#两台虚拟机同样操作(system2.eth3.eth4.或同样为eth1.eth2)
+
+6.配置IPv6 地址 在您的考试系统上配置接口 eth0 使用下列 IPv6 地址： system1 上的地址应该是 200e:ac18::e0a/64 system2 上的地址应该是 200e:ac18::e14/64 两个系统必须能与网络 200e:ac18/64 内的系统通信。 地址必须在重启后依旧生效。 两个系统必须保持当前的 IPv4 地址并能通信。
+	nmcli connection modify 'system eth0' ipv6.method manual ipv6.addresses 200c:ac18::e0a/64 connection.autoconnect yes
+	nmcli connrction up 'system eth0'
+	systemctl restart network
+	ifconfig
+	ping6 200c:ac18::e0a
+	#两台虚拟机同样操作
+	
+
+
+7.配置本地邮件服务
+在系统 system1 和 system2 上 配置邮件服务，满足以下要求： 这些系统不接收外部发送来的邮件 在这些系统上本地发送的任何邮件都会自动路由到 rhgls.rhce.cc 从这些系统上发送的邮件显示来自于 rhce.cc 您可以通过发送邮件到本地用户 'dave' 来测试您的配置，系统 rhgls.rhce.cc 已经配置把此 用户的邮件转到下列 URLhttp://rhgls.rhce.cc/received_mail/11
+	#netstat -antpu | grep 25
+	vim /etc/postfix/amin.cf
+	/myorigin=rhce.cc
+	/mydestination=
+	/relayhost=[rhgls.rhce.cc]
+	wq
+	firewall-cmd --add-service=smtp
+	systemctl restart postfix
+	ymu install mainx -y
+	echo aaa | mail -s sss dave
+	#到真机浏览器打开http：//rhgls.rhce.cc收、才、，查看邮件
+	scp /etc/postfix/main.cf system2.rhce.cc:/etc/postfix
+	
+
+8.通过 SMB 共享目录 在 system1 上配置 SMB 服务 您的 SMB 服务器必须是 STAFF 工作组的一个成员 共享 /common 目录 共享名必须为 common 只有 rhce.cc 域内的客户端可以访问 common 共享 common 必须是可以浏览的 用户 andy 必须能够读取共享中的内容，如果需要的话，验证的密码是 redhat
+	yum install samba -y
+	cd /etc/samba/
+	ls
+	mkdir /common
+	vim smb.conf
+	workgroup=STAFF
+	+[common]
+	psth = /common
+	host allow = 192.168.122.0/24
+	wq
+	chcon -R -t samba_share_t /common/
+	id andy
+	useradd andy
+	pdbedit -L #查看smb用户
+	yum whatprovides */smbpasswd
+	yum install samba-client -y
+	smbpasswd -a andy #添加smb用户并设密码redhat
+	firewall-cmd --aa-servise=samba --permanent
+
+9.配置多用户SMB 挂载 在 system1 共享通过 SMB 目录 /miscellaneous 满足以下要求： 共享名为 miscellaneous 共享目录 miscellaneous 只能被 rhce.cc 域中的客户端使用 共享目录 miscellaneous 必须可以被浏览 用户 silene 必须能以读的方式访问此共享， 访问密码是 redhat 用户 akira 必须能以读写的方式访问此共享， 访问密码是 redhat 此共享永久挂载在 system2.rhce.cc 上的 /mnt/multi 目录, 并使用用户 silene 作为认 证 任何用户可以通过用户 akira 来临时获取写的权限
+	cd /etc/samba
+	mkdir /miscellaneous
+	vim smb.conf
+	+[miscellaneous]
+	path = /miscellaneous
+	host allow 192.168.122.0/24
+	writable = no
+	write list = akira
+	wq
+	chmod o+w /miscellaneous/
+	systemctl restart samba
+	systemctl enable samba
+	chcon -R -t samba_share_t /miscellaneous/
+	useradd silene
+	useradd akira
+	smbpasswd -a silene  #密码设为制定密码
+	smbpasswd -a akira   #密码设为制定密码
+
+	
+到system2
+	mkdir /mnt/multi
+	yum install cifs* samba-client* -y
+	samclient -L //system1.rhce.cc -U andy%redhat  #查看来自rhce.cc的共享
+	mount -o multiuser,sec=ntlmssp,username=silene,passwd=redhat //system1.rhce.cc/miscellaneous /mnt/multi
+	useradd tom1
+	su - tom1
+	cifscreds add systemrhce.cc -u akira #普通用户通过akira获得暂时读写权限
+	cd /mnt/multi
+	touch aaa
+	echo '//system1.rhce.cc/miscellaneous /mnt/multi cifs defaults,multiuser,sec=ntlmssp,username=silene,passwd=redhat 0 0
+	mount -a
+	
+	
+
+10.配置NFS 服务 在 system1 配置NFS 服务，要求如下: 以只读的方式共享目录 /public 同时只能被 rhce.cc 域中的系统访问 以读写的方式共享目录 /protected 能被 rhce.cc 域中的系统访问 访问 /protected 需要通过 Kerberos 安全加密， 您可以使用下面 URL 提供的密钥 http://host.rhce.cc/materials/nfs_server.keytab. 目录 /protected 应该包含名为 confidential 拥有人为 ldapuser11 的子目录 用户 ldapuser11 能以读写方式访问 /protected/confidential
+	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=nfs accept' --permanent
+	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=rpc-bind accept' --permanent
+	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=mountd accept' --permanent
+	mkdir /public
+	mkdir /protected
+	vim /etc/exports
+	/public 192.168.122.0/24(ro,sync)
+	/protected *(rw,sync,sec=krb5p)
+	wq
+	wget -O /etc/krb5.keytab http…… 
+	vim /etc/sysconfig/nfs
+	RPCNFSDARGS='-V 4.2'
+	wq
+	mkdir /protected/confidential
+	chown ldapuser11 /protected/confidential
+	ls -ld /protected/confidential
+	ls -ldZ /protected/confidential #查看上下文
+	chcon -R -t public_content_t /protected/confidential
+	systemctl start nfs-server
+	systemctl start nfs
+	systemctl start nfs-secure-server
+	systemctl enable nfs-server
+	systemctl enable nfs-secure-server
+	
+
+11. 挂载一个 NFS 共享 在 system2 上挂载一个来自 system1.rhce.cc 的 NFS 共享， 并符合下列要求： /public 挂载在下面的目录上 /mnt/nfsmount /protected 挂载在下面的目录上 /mnt/nfssecure 并使用安全的方式，密钥下载 URL 如 下： http://host.rhce.cc/materials/nfs_client.keytab. 用户 ldapusre11 能够在 /mnt/nfssecure/confidential 上创建文件,这些文件系统在系统启动时自动挂载
+	showmount -e system1.rhce.cc
+	mkdir /mnt/nfsmount
+	mkdir /mnt/nfssrcure
+	echo 'system1.rhce.cc:/public /mnt/nfsmount nfs defaults 0 0' >> /etc/fstab
+	mount -a
+	df -hT
+	wget -O /etc/krb5.keytab http……
+	systemctl start nfs-secure
+	systemctl enable nfs-secure
+	echo 'system1.rhce.cc:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2 0 0' >> /etc/fstab
+	mount -a
+
+#system1上操作
+	ssh ldapuser11@system2.rhce.cc
+	cd /mnt/nfssecure/confidential
+	ls
+	touch ldapuser1111
+	ls
+	
+
+12. 配置 web 站点 system1 上配置一个站点 http://system1.rhce.cc 然后执行下述步骤： 从 http://rhgls.rhce.cc/materials/station.html 下载文件，并且将文件重命名为 index.html 不要修改此文件的内容 将文件 index.html 拷贝到您的 web 服务器的 DocumentRoot 目录下 来自于 rhce.cc 域的客户端可以访问此 Web服务 来自于 my133t.org 域的客户端拒绝访问此Web服务
+	yum groupinstall web* -y
+	vim /etc/httpd/conf/httpd.conf
+	ServerName system1.rhce.cc:80
+	wq
+	wget -O /var/www/html/index.html http……
+	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=http accept' --permanent
+	systemctl start httpd
+	systemctl enable httpd
+
+	
+13. 配置安全 web 服务 为 站 点 http://system1.rhce.cc 配 置 TLS 加 密 一 个 已 签 名 证 书 从 http://host.rhce.cc/materials/system1.crt 获 取 此 证 书 的 密 钥 从 http://host.rhce.cc/materials/system1.key 获 取 此 证 书 的 签 名 授 权 信 息 从 http://host.rhce.cc/materials/domain11.crt 获取
+-----------------------------------
+	cp /usr/share/doc/httpd-2.4.6/httpd-vhosts.conf /etc/httpd/conf.d/vhost.conf
+	wget -O …… http://host.rhce.cc/materials/system1.crt
+	wget -O …… http://host.rhce.cc/materials/system1.key
+	wget -O …… http://host.rhce.cc/materials/domain11.crt
+	vim /etc/httpd/conf.d/vhost.conf
+	<VirtualHost system1.rhce.cc:80>
+		DocumentRoot /var/www/html
+		ServerName system1.rhce.cc
+	</VirtualHost>
+	<VirtualHost system1.rhce.cc:443>
+		DocumentRoot /var/www/html
+		ServerName system1.rhce.cc
+			SSLEngine on
+			SSLCertificateFile /…….crt
+			SSLCertificatekeyFile /…….key
+			SSLCertificateChainFile /…….crt
+		#SSLl路径在/etc/httpd/conf.d/ssl.conf可查找
+		#并且修改ssl.conf文件中
+		#SSLRngine off
+	</VirtualHost>
+	wq
+	systemctl restart httpd
+	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=https accept' --permanent
+	物理机访问https://system1.rhce.cc
+	
+	
+14. 配置虚拟主机 在 system1 上扩展您的 web 服务器，为站点 http://www..rhce.cc 创建一个虚拟主机，然后 执行下述步骤： 设置 DocumentRoot 为 /var/www/virtual 从 http://rhgls.rhce.cc/materials/www.html 下载文件并重命名为 index.html 不要对文件 index.html 的内容做任何修改 将文件 index.html 放到虚拟主机的 DocumentRoot 目录下 确保 andy 用户能够在 /var/www/virtual 目录下创建文件
+注意：原始站点 http://system1.rhce.cc 必须仍然能够访问， 名称服务器 rhce.cc 提供对主 机名 www.rhce.cc 的域名解析
+--------------------------------
+	mkdir /var/www/virtual
+	wget -O /var/www/virtual/index.html http://rhgls.rhce.cc/materials/www.html
+	vim /etc/httpd/conf.d/vhost.conf
+	+
+	<VirtualHost www.rhce.cc:80>
+		DocumentRoot /var/www/virtual
+		ServerName www.rhce.cc
+	</VirtualHost>
+	<Directory "/var/www/virtual">   #新目录路径
+		ALLowOverride None
+		Require all granted
+	#模板<Directory>在vim /etc/httpd/conf/httpd.conf可查
+	</Directory>   
+	wq
+	setfacl -m u:andy:rwx /var/www/virtual
+	
+15. 配置 web 内容的访问 在您的system1 上的 web 服务器的 DocumentRoot 目录下 创建一个名为 secret 的目录， 要求如下： 从 http://rhgls.rhce.cc/materials/private.html 下载一个文件副本到这个目录，并且重命名 为 index.html。 不要对这个文件的内容做任何修改。 从 system1 上，任何人都可以浏览 secret 的内容， 但是从其它系统不能访问这个目 录的内容
+------------------------------------
+	mkdir /var/www/html/secret
+	mkdir /var/www/virtual/secret
+	wget -O /var/www/virtual/secret/index.html http://rhgls.rhce.cc/materials/private.html
+	wget -O /var/www/html/secret/index.html http://rhgls.rhce.cc/materials/private.html
+	vim /etc/httpd/conf.d/vhost.conf
+	+
+	<Directory "/var/www/virtual/srcret">
+		ALLowOverride None
+		Require local
+	</Directory>
+	<Directory "/var/www/html/srcret">
+		ALLowOverride None
+		Require local
+	</Directory>
+	wq
+	systemctl restart httpd
+	curl -s http://system1.rhce.cc/secret/index.html
+	curl -s http://www.rhce.cc/secret/index.html
+	#elinks -dump http://system1.rhce.cc/secret/index.html
+
+
+16. 实现动态 Web内容 在 system1 上配置提供动态 Web内容，要求如下：
+动态内容由名为 dynamic.rhce.cc 的虚拟主机提供 虚拟主机侦听在端口 8998 从 http://rhgls.rhce.cc/materials/webapp.wsgi 下载一个脚本，然后放在适当的位置， 无 论如何不要求修改此文件的内容 客户端访问 http://dynamic.rhce.cc:8998/ 时 应该接收到动态生成的web 页面 此 http://dynamic.rhce.cc:8998/ 必须能被 rhce.cc 域内的所有系统访问
+------------------------------------
+	vim /etc/httpd/conf/httpd.conf
+	+listen 8998
+	#并找到semanage port -a -t http_port_t -p tcp 8998
+	wq
+	semanage port -a -t http_port_t -p tcp 8998
+	yum whatprovides */semanage
+	yum install policycoreutils-python-2.2.5-11.e17.x86_64 -y
+	semanage port -a -t http_port_t -p tcp 8998
+	yum install mod_wsgi -y
+	cd /var/www/html
+	wget http://rhgls.rhce.cc/materials/webapp.wsgi
+	vim /etc/httpd/conf.d/vhost.conf
+	+
+	<VirtualHost dynamic.rhce.cc:8998>
+		ServerName dynamic..rhce.cc
+		WSGIScriptAlias / /var/www/html/webapp.wsgi
+	</VirtualHost>
+	wq
+	systemctl restart httpd
+	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 port port=8998 protocol=tcp accept' --permanent
+	物理机访问dynamic。rhce.cc：8998
+	
+	
+17. 创建一个脚本 在 system1 上创建一个名为 /root/script 的脚本， 让其提供下列特性： 当运行 /root/script foo，输出为 bar 当运行 /root/script bar，输出为 foo 当没有任何参数或者参数不是 foo 或者 bar 时， 其错误输出产生以下的信息：/root/script foo|bar。
+	vim /root/script
+	#!/bin/bash
+	case $1 in
+	foo)
+		echo 'bar';
+	bar)
+		echo 'foo';
+	*)
+		echo '/root/script foo|bar'
+		exit 1
+	esac
+	wq
+	
+18. 创建一个添加用户的脚本 在 system1 上创建一个脚本，名为 /root/mkusers, 此脚本能实现为系统 system1 创建本地 用户, 并且这些用户 的用户名来自一个包含用户名列表的文件。同时满足下列要求： 此脚本要求提供一个参数，此参数就是包含用户名列表的文件 如果没有提供参数，此脚本应该给出下面的提示信息 Usage:/root/mkusers 然后退出并 返回相应的值 如果提供一个不存在的文件名，此脚本应该给出下面的提示信息 Input filenot found 然 后退出并返回相应的值 创建的用户登录 shell 为 /bin/false 此脚本不需要为用户设置密码 您可以从下面的 URL 获取用户名列表作为测试用 http://rhgls.rhce.cc/materials/userlist。
+	
+	vim /root/mkusers
+	#!/bin/bash
+	if [ $# -eq 0 ];then
+		echo 'Usage:/root/mkusers
+		exit 1
+	fi
+	if [ ! -e $1 ];then
+		echo 'Input file not found'
+		exit 1
+	fi 
+	for a in $(cat $i)
+	do
+		usaeradd -s /bin/fale $a
+	done
+
+19. 配置 iSCSI 服务端 配置 system1 提供一个iSCSI 服务 磁盘名为 iqn.2014-09.com.example.domain11:system1 ， 并符合下列要求： 服务端口为 3260 使用 iscsi_vol 作其后端卷 其大小为 3G 此服务只能被 system2.rhce.cc 访问。
+
+	yum list target*
+	yum install targetd targetcli -y
+	systemctl start targetd
+	host system2.rhce.cc
+	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.200 port port=3260 protocol=tcp accept' --permanent
+	fdisk /dev/vda #创建一个3G的分区
+	partprobe /dev/vda
+	targetcli
+	>ls /
+	>/backstores/block create iscsi_vol /dev/vda5
+	>ls /
+	>#/backstores/block delete iscsi_vol
+	>/iscsi create iqn.2014-09.com.example.domain11:system1
+	>ls /
+	>cd iscsi/iqn.2014-09.com.example.domain11:system1/tpg1/
+	>ls
+	>acls/ create iqn.2014-09.com.example.domain11:system1
+	>luns/ create /backstores/block/iscsi_vol
+	>ls
+	>portals/ create 192.168.122.100 3260
+	>ls /
+	>exit
+	systemctl restart targetd
+	systemctl enable tagetd
+	
+	
+	
+20. 配置 iSCSI 的客户端 配置system2 使其能连接在system1 的上提供的 iqn.2014-09.com.example.domain11:system1 并符合以下要求： iSCSI 设备在系统启动的期间自动加载 块设备 iSCSI 上包含一个大小为 1700MiB 的分区，并格式化为 xfs 此分区挂载在 /mnt/data 上 同时在系统启动的期间自动挂载
+	
+	yum list iscsi*
+	yum install iscsi-initiator-utils.x86_64
+	vim /etc/iscsi/initiatorname.iscsi
+	Initiaorname=iqn.2014-09.com.example.domain11:system1
+	wq
+	systemctl restart iscsid
+	systemctl enable iscsid
+	iscsiadm -m discovery -t st -p 192.168.122.100
+	cat /proc/partitions
+	iscsiadm -m discovery -t st -p 192.168.122.100 -l
+	cat /proc/partitions
+	fdisk /dev/sda  #使用system1共享的sda1创建1700M的分区
+	partprobe /dev/sda
+	mkfs.xfs /dev/sda1
+	mkdir /mnt/data
+	vim /etc/fstab
+	+
+	/dev/sda1 /mnt/data xfs defaults,_netdev 0 0
+	#当存在多个远程存储时，必须用UUID唯一标识符进行挂载，不然文件会出现混乱，
+	#blkid | grep /dev/sda1
+	#UUID=eb………………-ad6 /iscsi xfs defaults,_netdev 0 0 
+	wq
+	mount -a
+	df -hT
+
+	
+21. 配置一个数据库 在 system1 上创建一个 MariaDB 数据库, 名为 Contacts ，并符合以下条件： 数 据 库 应 该 包 含 来 自 数 据 库 复 制 的 内 容 ， 复 制 文 件 的 URL 为 http://rhgls.rhce.cc/materials/users.mdb 。 数据库只能被 localhost 访问。 除了 root 用户, 此数据库只能被用户 Luigi 查询。 此用户密码为 redhat。 root 用户的密码为 redhat ， 同时不允许空密码登录。
+	
+	yum install mariadb mariadb-server -y
+	systemctl start mariadb
+	systemctl enable mariadb
+	wget http://rhgls.rhce.cc/materials/users.mdb
+	mysql
+	>show databases;
+	>create database Contacts;
+	>use Contacts;
+	>show tables;
+	>source /root/user.mdb;
+	>show tables;
+	>grant select on Contacts.* to Luigi@'localhost' identified by 'redhat';
+	>set password=password('redhat');
+	>quit
+	mysql
+ 
+	
+22. 数据库查询 在系统 system1 上使用数据库 Contacts ， 并使用相应的 SQL 查询以回答下列问题：
+密码是 tangerine 的人的名字? 
+有多少人的姓名是 John 同时居住在 Santa Clara?   (填空题)
+	
+	mysql 
+	>show tables;
+	>desc name;
+	>desc pass;
+	>select * from name join pass where name.aid=pass.bid and password='tangerine';
+	>desc name;
+	>desc loc;
+	>show tables;
+	>select count(*) from name join loc where name.aid=loc.cid and firstname='john' and loction='Santa Clara';
+	>quit
+	firewall-cmd --list-all
+	
