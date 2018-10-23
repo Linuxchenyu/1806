@@ -1,27 +1,27 @@
- ÉÏ Îç------RHSCA
-Hostname£ºstation.rhce.cc
+ ä¸Š åˆ------RHSCA
+Hostnameï¼šstation.rhce.cc
 IP address:192.168.122.100
 Netmask:255.255.255.0
 Gatewav:192.168.122.1
 NameServer:192.168.122.10
-
-Root ÃÜÂë£ºredhat
-0£¬ĞŞ¸ÄÎïÀí»úÃÜÂë
-	°´¡®e¡¯¼ü£¬ÒÆ¶¯µ½linuxĞĞºó+init=/bin/sh£¬É¾³ıÇ°Á½¸ö×ÖÄ¸¡®rhgb quiet¡¯ctrl+x £¬µÈ´ı»úÆ÷Æô¶¯
+asdfg
+Root å¯†ç ï¼šredhat
+0ï¼Œä¿®æ”¹ç‰©ç†æœºå¯†ç 
+	æŒ‰â€˜eâ€™é”®ï¼Œç§»åŠ¨åˆ°linuxè¡Œå+init=/bin/shï¼Œåˆ é™¤å‰ä¸¤ä¸ªå­—æ¯â€˜rhgb quietâ€™ctrl+x ï¼Œç­‰å¾…æœºå™¨å¯åŠ¨
 	mount -o remount.rw /
 	echo redhat| passwd --stdin root
 	touch /.autorelabel
 	exec /sbin/init
-	³öÏÖrhelÊ±µÈ´ı£¬ÖªµÀ³öÏÖµÇÂ½½çÃæ¡£
+	å‡ºç°rhelæ—¶ç­‰å¾…ï¼ŒçŸ¥é“å‡ºç°ç™»é™†ç•Œé¢ã€‚
 
-1,SELinux ±ØĞëÔËĞĞÔÚEnforcingÄ£Ê½ÏÂ¡£
+1,SELinux å¿…é¡»è¿è¡Œåœ¨Enforcingæ¨¡å¼ä¸‹ã€‚
 	getenforce
 	setenforce 1
 	vim /etc/selinux/config
 	SELINUX=enforcing
 	wq
 
-2£¬ÅäÖÃYUMÔ´£¬ËùÊ¹ÓÃµØÖ·£ºftp://server.rhce.cc/dvd×÷ÎªÄ¬ÈÏÔ´¡£
+2ï¼Œé…ç½®YUMæºï¼Œæ‰€ä½¿ç”¨åœ°å€ï¼šftp://server.rhce.cc/dvdä½œä¸ºé»˜è®¤æºã€‚
 	vim /etc/yum.repos.d/aa.repo
 	[rhce]
 	name=rhce
@@ -31,14 +31,14 @@ Root ÃÜÂë£ºredhat
 	wq
 	yum install gcc -y
 
-3£¬µ÷ÕûÂß¼­¾ívoµÄ´óĞ¡£¬Îª290M£¬È·±£Õâ¸öÎÄ¼şÏµÍ³µÄÄÚÈİÒÀÈ»ÍêÕû¡£
+3ï¼Œè°ƒæ•´é€»è¾‘å·voçš„å¤§å°ï¼Œä¸º290Mï¼Œç¡®ä¿è¿™ä¸ªæ–‡ä»¶ç³»ç»Ÿçš„å†…å®¹ä¾ç„¶å®Œæ•´ã€‚
 	lvs
 	lvextend -L 290M /dev/vg0/vo
 	xfs_gorwfs /dev/vg0/vo 
 	#resize2fs /dev/vg0/vo
 	df -hT
 
-4£¬´´½¨adminuser×é£¬²¢´´½¨ÓÃ»§natasha£¬¸½Êô×éadminuser¡£²¢´´½¨ÓÃ»§harry£¬¸½Êô×éadminuser¡£²¢´´½¨ÓÃ»§sarah£¬ÔÚÏµÍ³ÉÏ²»ÄÜ·ÃÎÊ½»»»shell£¬ÇÒ²»ÊÇadminuser³ÉÔ±£¬ÃÜÂë½ÔÎªredhat¡£
+4ï¼Œåˆ›å»ºadminuserç»„ï¼Œå¹¶åˆ›å»ºç”¨æˆ·natashaï¼Œé™„å±ç»„adminuserã€‚å¹¶åˆ›å»ºç”¨æˆ·harryï¼Œé™„å±ç»„adminuserã€‚å¹¶åˆ›å»ºç”¨æˆ·sarahï¼Œåœ¨ç³»ç»Ÿä¸Šä¸èƒ½è®¿é—®äº¤æ¢shellï¼Œä¸”ä¸æ˜¯adminuseræˆå‘˜ï¼Œå¯†ç çš†ä¸ºredhatã€‚
 	groupadd adminuser
 	useradd -G adminuser natasha
 	useradd -G adminuser harry
@@ -47,12 +47,12 @@ Root ÃÜÂë£ºredhat
 	echo redhat | passwd --stdin harry
 	echo redhat | passwd --stdin sarah
 	
-5£¬¸´ÖÆ/etc/fstabµ½/var/tmp/fstab,ÅäÖÃ/var/tmp/fstabµÄÈ¨ÏŞÈçÏÂ
-ÎÄ¼ş/var/tmp/fstabËùÓĞÕßÊÇroot
-ÎÄ¼ş/var/tmp/fstabÊôÓÚroot×é
-ÎÄ¼ş/var/tmp/fstab²»ÄÜ±»ÈÎºÎÓÃ»§Ö´ĞĞÓÃ»§
-ÓÃ»§natasha¿É¶Á¿ÉĞ´£¬ÓÃ»§harry²»ÄÜ¶ÁÒ²²»ÄÜĞ´
-ËùÒÔÆäËûÓÃ»§¿É¶Á
+5ï¼Œå¤åˆ¶/etc/fstabåˆ°/var/tmp/fstab,é…ç½®/var/tmp/fstabçš„æƒé™å¦‚ä¸‹
+æ–‡ä»¶/var/tmp/fstabæ‰€æœ‰è€…æ˜¯root
+æ–‡ä»¶/var/tmp/fstabå±äºrootç»„
+æ–‡ä»¶/var/tmp/fstabä¸èƒ½è¢«ä»»ä½•ç”¨æˆ·æ‰§è¡Œç”¨æˆ·
+ç”¨æˆ·natashaå¯è¯»å¯å†™ï¼Œç”¨æˆ·harryä¸èƒ½è¯»ä¹Ÿä¸èƒ½å†™
+æ‰€ä»¥å…¶ä»–ç”¨æˆ·å¯è¯»
 	cp /etc/fstab /var/tmp/fstab
 	ls -ld /var/tmp/fstab
 	chmod o-x /var/tmp/fstab
@@ -60,14 +60,14 @@ Root ÃÜÂë£ºredhat
 	setfacl -m u:harry:--- /var/tmp/fstab
 
 
-6,ÓÃ»§natashaÅäÖÃÒ»¸öcron.job¡£Ã¿Ìì14£º23ÔËĞĞ£¬Ö´ĞĞ/bin/echo hiya
+6,ç”¨æˆ·natashaé…ç½®ä¸€ä¸ªcron.jobã€‚æ¯å¤©14ï¼š23è¿è¡Œï¼Œæ‰§è¡Œ/bin/echo hiya
 	crontab -e -u natasha
 	23 14 * * * /bin/echo hiya
 	X
 	crontab -u natasha
 	
 
-7,´´½¨Ä¿Â¼/home/admins,Êô×éadminuser£¬¶Ô×é¿ÉĞ´¿É¶Á¿ÉÖ´ĞĞ£¬µ«ÆäËûÓÃ»§²»ĞĞ£¬ÇÒÔÚ/home/adminsÏÂ´´½¨µÄÈÎºÎÎÄ¼şÊô×é×Ô¶¯ÉèÖÃÎªadminuser¡£
+7,åˆ›å»ºç›®å½•/home/admins,å±ç»„adminuserï¼Œå¯¹ç»„å¯å†™å¯è¯»å¯æ‰§è¡Œï¼Œä½†å…¶ä»–ç”¨æˆ·ä¸è¡Œï¼Œä¸”åœ¨/home/adminsä¸‹åˆ›å»ºçš„ä»»ä½•æ–‡ä»¶å±ç»„è‡ªåŠ¨è®¾ç½®ä¸ºadminuserã€‚
 	mkdir /home/admins
 	chgrp adminuser /home/admins
 	ls -ld /home/admins
@@ -76,34 +76,34 @@ Root ÃÜÂë£ºredhat
 	chmod g+s /home/admins
 	ls -ld /home/admins
 
-8£¬´Óhttp://rhgls.rhce.cc/pub/updates °²×°ºÏÊÊµÄÄÚºË¸üĞÂ£¬¿ª»úÆô¶¯¡£
+8ï¼Œä»http://rhgls.rhce.cc/pub/updates å®‰è£…åˆé€‚çš„å†…æ ¸æ›´æ–°ï¼Œå¼€æœºå¯åŠ¨ã€‚
 	yum install wget -y
 	#firefox http://rhgls.rhce.cc/pub/updates
-	#Ñ¡ÖĞkernelÄÚºË£¬Á´½ÓÁí´æÎª£¬´æµ½rootÄ¿Â¼ÏÂ¡£
+	#é€‰ä¸­kernelå†…æ ¸ï¼Œé“¾æ¥å¦å­˜ä¸ºï¼Œå­˜åˆ°rootç›®å½•ä¸‹ã€‚
 	yum list wget
 	yum install wget -y
 	wget http://rhgls.rhce.cc/pub/updates/kernel*
 	rpm -ivh kernel*
 
-9,Ìá¹©LDAPÑéÖ¤·şÎñ£¬Ö¤Êéhttp://rhgls.rhce.cc/pub/domain1.crt£¬ÅäÖÃºóldapuser11¿ÉµÇÂ¼ÄãµÄÏµÍ³µ«Ã»ÓĞ¼ÒÄ¿Â¼£¬ÃÜÂëÊÇredhat¡£
+9,æä¾›LDAPéªŒè¯æœåŠ¡ï¼Œè¯ä¹¦http://rhgls.rhce.cc/pub/domain1.crtï¼Œé…ç½®åldapuser11å¯ç™»å½•ä½ çš„ç³»ç»Ÿä½†æ²¡æœ‰å®¶ç›®å½•ï¼Œå¯†ç æ˜¯redhatã€‚
 	yum list auth*
 	yum install authconfig-gtk.x86_64 -y
 	authconfig-gtk &
-	Ñ¡LDAP
+	é€‰LDAP
 	id ldapuser11
 	su -ldapuser11
 	
 
-10£¬ÅäÖÃÏµÍ³Ê¹ËüÊÇrhgls.rhce.cc£¨Õæ»ú£©µÄÒ»¸öNTP¿Í»§¡£
+10ï¼Œé…ç½®ç³»ç»Ÿä½¿å®ƒæ˜¯rhgls.rhce.ccï¼ˆçœŸæœºï¼‰çš„ä¸€ä¸ªNTPå®¢æˆ·ã€‚
 	yum list system-config-date -y
 	yum install system-config-date -y
 	system-config-date &
 	
-É¾³ıËùÓĞNTP·şÎñ>Ìí¼Ó¡®rhgls.rhcce.cc¡¯È·¶¨
+åˆ é™¤æ‰€æœ‰NTPæœåŠ¡>æ·»åŠ â€˜rhgls.rhcce.ccâ€™ç¡®å®š
 
-11£¬ÅäÖÃautofs×Ô¶¯¹ÒÔØLDAPÓÃ»§µÄ¼ÒÄ¿Â¼£¬host.rhce.ccÊ¹ÓÃNFS¹²ÏíÁË/home/guests¸øÄãµÄÏµÍ³£¬²¢ÉèºÃÓÃ»§ldapuser11µÄ¼ÒÄ¿Â¼Îªhost.rhce.cc£º/home/guests/ldapuser11£¬Ê¹×Ô¶¯¹ÒÔØµ½±¾µØ/home/guestsÏÂÃæµÄ/home/guests/ldapuser11£¬¼ÒÄ¿Â¼±ØĞë¶ÔÓÃ»§¿ÉĞ´£¬ÃÜÂë£ºredhat¡£
+11ï¼Œé…ç½®autofsè‡ªåŠ¨æŒ‚è½½LDAPç”¨æˆ·çš„å®¶ç›®å½•ï¼Œhost.rhce.ccä½¿ç”¨NFSå…±äº«äº†/home/guestsç»™ä½ çš„ç³»ç»Ÿï¼Œå¹¶è®¾å¥½ç”¨æˆ·ldapuser11çš„å®¶ç›®å½•ä¸ºhost.rhce.ccï¼š/home/guests/ldapuser11ï¼Œä½¿è‡ªåŠ¨æŒ‚è½½åˆ°æœ¬åœ°/home/guestsä¸‹é¢çš„/home/guests/ldapuser11ï¼Œå®¶ç›®å½•å¿…é¡»å¯¹ç”¨æˆ·å¯å†™ï¼Œå¯†ç ï¼šredhatã€‚
 	yum install autofs -y
-	getent passwd ldapuser11   #²éÕÒldapuser11µÄ¼ÒÄ¿Â¼
+	getent passwd ldapuser11   #æŸ¥æ‰¾ldapuser11çš„å®¶ç›®å½•
 	vim /etc/auto.master
 	#/misc /etc/auto.misc
 	+
@@ -119,13 +119,13 @@ Root ÃÜÂë£ºredhat
 	su -ldapuser11
 	exit
 	
-12,´´½¨ÓÃ»§alex£¬uid£º3400£¬ÃÜÂëredhat¡£
+12,åˆ›å»ºç”¨æˆ·alexï¼Œuidï¼š3400ï¼Œå¯†ç redhatã€‚
 	useradd -u 3400 alex
 	echo redhat | passwd --stdin alex
 
-13,Ôö¼ÓÒ»¸ö512M½»»»·ÖÇø¡£
+13,å¢åŠ ä¸€ä¸ª512Mäº¤æ¢åˆ†åŒºã€‚
 	fdisk -l /dev/vda
-	fdisk /dev/vda   ´´½¨512MµÄ·ÖÇø
+	fdisk /dev/vda   åˆ›å»º512Mçš„åˆ†åŒº
 	partprobe /dev/vda
 	swapon -s
 	mkswap /dev/vda5
@@ -135,16 +135,16 @@ Root ÃÜÂë£ºredhat
 	wq
 	
 
-14,ÕÒ³öËùÓĞÕßÊÇiraµÄÎÄ¼ş£¬²¢¿½±´µ½/root/findresultsÄ¿Â¼¡£
+14,æ‰¾å‡ºæ‰€æœ‰è€…æ˜¯iraçš„æ–‡ä»¶ï¼Œå¹¶æ‹·è´åˆ°/root/findresultsç›®å½•ã€‚
 	cd /root/
 	mkdir findresults
 	find / -user ira -exec cp -a {} findresults/ \;
 	
 
-15,ÔÚ/usr/share/dict/wordsÖĞÕÒµ½º¬ÓĞseismicµÄĞĞ£¬²¢¸´ÖÆµ½/root/lines¡£
+15,åœ¨/usr/share/dict/wordsä¸­æ‰¾åˆ°å«æœ‰seismicçš„è¡Œï¼Œå¹¶å¤åˆ¶åˆ°/root/linesã€‚
 	grep seismic /usr/share/dict/works >  /root/lines
 	
-16,´´½¨/root/backup.tar.bz2±¸·İ£¬ÄÚÈİÎª/usr/local£¬Ê¹ÓÃbzip2Ñ¹Ëõ¡£
+16,åˆ›å»º/root/backup.tar.bz2å¤‡ä»½ï¼Œå†…å®¹ä¸º/usr/localï¼Œä½¿ç”¨bzip2å‹ç¼©ã€‚
 	yum install bzip2
 	cd /usr/local
 	tar jcvf /root/backup.tar.bz2 *   #bzip2
@@ -153,8 +153,8 @@ Root ÃÜÂë£ºredhat
 	rm -rf /opt/*
 	
 
-17,´´½¨Âß¼­¾í50¸öÀ©Õ¹´óĞ¡£¬ÊôÓÚ¾í×édatastore£¬Ã¿¸öÀ©Õ¹16MiB£¬Ê¹ÓÃext3¸ñÊ½»¯£¬ÖªµÀ¹ÒÔØµ½/nmt/database
-	fdisk /dev/vda   #´´½¨Ò»¸öGµÄ·ÖÇø
+17,åˆ›å»ºé€»è¾‘å·50ä¸ªæ‰©å±•å¤§å°ï¼Œå±äºå·ç»„datastoreï¼Œæ¯ä¸ªæ‰©å±•16MiBï¼Œä½¿ç”¨ext3æ ¼å¼åŒ–ï¼ŒçŸ¥é“æŒ‚è½½åˆ°/nmt/database
+	fdisk /dev/vda   #åˆ›å»ºä¸€ä¸ªGçš„åˆ†åŒº
 	wq
 	partprobe /dev/vda
 	vgcreate -s 16M batestore /dev/vda6
@@ -167,9 +167,9 @@ Root ÃÜÂë£ºredhat
 	mount -a
 	df -hT
 ----------------------------------------------------------------------------------------------------------------------
--------ÏÂÎç-----RHCE
+-------ä¸‹åˆ-----RHCE
 
-1.ÅäÖÃ SELinux SELinux ±ØĞëÔÚÁ½¸öÏµÍ³ system1 ºÍ system2 ÖĞÔËĞĞÓÚ Enforcing Ä£Ê½
+1.é…ç½® SELinux SELinux å¿…é¡»åœ¨ä¸¤ä¸ªç³»ç»Ÿ system1 å’Œ system2 ä¸­è¿è¡Œäº Enforcing æ¨¡å¼
 	getenforce
 	setenforce 1
 	vim /etc/selinux/config
@@ -177,11 +177,11 @@ Root ÃÜÂë£ºredhat
 	wq
 
 
-2.ÅäÖÃSSH ·ÃÎÊ °´ÒÔÏÂÒªÇóÅäÖÃ SSH ·ÃÎÊ: ÓÃ»§ÄÜ¹»´ÓÓò rhce.cc ÄÚµÄ¿Í»§¶ËÍ¨¹ı SSH Ô¶³Ì·ÃÎÊÄúµÄÁ½¸öĞéÄâ»úÏµÍ³ ÔÚÓò my133t.org ÄÚµÄ¿Í»§¶Ë²»ÄÜ·ÃÎÊÄúµÄÁ½¸öĞéÄâ»úÏµÍ³
+2.é…ç½®SSH è®¿é—® æŒ‰ä»¥ä¸‹è¦æ±‚é…ç½® SSH è®¿é—®: ç”¨æˆ·èƒ½å¤Ÿä»åŸŸ rhce.cc å†…çš„å®¢æˆ·ç«¯é€šè¿‡ SSH è¿œç¨‹è®¿é—®æ‚¨çš„ä¸¤ä¸ªè™šæ‹Ÿæœºç³»ç»Ÿ åœ¨åŸŸ my133t.org å†…çš„å®¢æˆ·ç«¯ä¸èƒ½è®¿é—®æ‚¨çš„ä¸¤ä¸ªè™šæ‹Ÿæœºç³»ç»Ÿ
 	host system1.rhce.cc
 	vim /etc/host.allow
 	+
-	sshd : 192.168.122.0/255.255.255.0 #Íø¹Ø²»ÄÜÊ¹ÓÃ/24¼òĞ´
+	sshd : 192.168.122.0/255.255.255.0 #ç½‘å…³ä¸èƒ½ä½¿ç”¨/24ç®€å†™
 	wq
 	vim /etc/host.deny
 	+	
@@ -190,27 +190,27 @@ Root ÃÜÂë£ºredhat
 	scp /etc/host.deny /etc/host.allow system2.rhce.cc:/etc/
 
 
-3.×Ô¶¨ÒåÓÃ»§»·¾³ ÔÚÏµÍ³ system1 ºÍ system2 ÉÏ´´½¨×Ô¶¨ÒåÃüÁîÃûÎª qstat ´Ë×Ô¶¨ÒåÃüÁî½«Ö´ĞĞÒÔÏÂÃüÁî: /bin/ps-Aopid,tt,user,fname,rsz ´ËÃüÁî¶ÔÏµÍ³ÖĞËùÓĞÓÃ»§ÓĞĞ§¡£
+3.è‡ªå®šä¹‰ç”¨æˆ·ç¯å¢ƒ åœ¨ç³»ç»Ÿ system1 å’Œ system2 ä¸Šåˆ›å»ºè‡ªå®šä¹‰å‘½ä»¤åä¸º qstat æ­¤è‡ªå®šä¹‰å‘½ä»¤å°†æ‰§è¡Œä»¥ä¸‹å‘½ä»¤: /bin/ps-Aopid,tt,user,fname,rsz æ­¤å‘½ä»¤å¯¹ç³»ç»Ÿä¸­æ‰€æœ‰ç”¨æˆ·æœ‰æ•ˆã€‚
 	vim /etc/bashrc
-	×îºóĞĞ
+	æœ€åè¡Œ
 	+	
-	alias qstat='/bin/ps -Ao¡­¡­¡®
+	alias qstat='/bin/ps -Aoâ€¦â€¦â€˜
 	wq
 	source /etc/bashrc
 	qstat
 	scp /etc/bashrc /system2.rhce.cc:/etc/
 
-4.ÅäÖÃ¶Ë¿Ú×ª·¢ ÔÚÏµÍ³ system1 ÅäÖÃ¶Ë¿Ú×ª·¢£¬ ÒªÇóÈçÏÂ£º ÔÚ 192.168.122.0/24 ÍøÂçÖĞµÄÏµÍ³£¬ ·ÃÎÊ system1 µÄ±¾µØ¶Ë¿Ú 5423 ½«±»×ª·¢µ½ 80 ´ËÉèÖÃ±ØĞëÓÀ¾ÃÓĞĞ§
-	#firewall-cmd --list-rich-rule #²éÊÇ·ñÓĞ¸»¹æÔò
+4.é…ç½®ç«¯å£è½¬å‘ åœ¨ç³»ç»Ÿ system1 é…ç½®ç«¯å£è½¬å‘ï¼Œ è¦æ±‚å¦‚ä¸‹ï¼š åœ¨ 192.168.122.0/24 ç½‘ç»œä¸­çš„ç³»ç»Ÿï¼Œ è®¿é—® system1 çš„æœ¬åœ°ç«¯å£ 5423 å°†è¢«è½¬å‘åˆ° 80 æ­¤è®¾ç½®å¿…é¡»æ°¸ä¹…æœ‰æ•ˆ
+	#firewall-cmd --list-rich-rule #æŸ¥æ˜¯å¦æœ‰å¯Œè§„åˆ™
 	#firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 forward-port port=5423 protocol=tcp to-port=80' --permanent
 	firewall-cmd --permanent --zone=public --add-forward-port=port=5423:proto=tcp:toport=80
 	firewall-cmd --reload
 	firewall-cmd --zone=public --list-all
-	#·À»ğÇ½²ßÂÔÇë·­±Ê¼Ç 
-	#²»Í¬Ö¸ÁîÇë¿´¸½¼ş
+	#é˜²ç«å¢™ç­–ç•¥è¯·ç¿»ç¬”è®° 
+	#ä¸åŒæŒ‡ä»¤è¯·çœ‹é™„ä»¶
 
-5.ÅäÖÃ¾ÛºÏÁ´Â· ÔÚ system1.rhce.cc ºÍ system2.rhce.cc Ö®¼ä°´ÒÔÏÂÒªÇóÅäÖÃÒ»¸öÁ´Â·£º ´ËÁ´Â·Ê¹ÓÃ½Ó¿Ú eth1 ºÍ eth2 ´ËÁ´Â·ÔÚÒ»¸ö½Ó¿ÚÊ§Ğ§Ê±ÈÔÈ»ÄÜ¹¤×÷ ´ËÁ´Â·ÔÚ system1 Ê¹ÓÃÏÂÃæµÄµØÖ· 172.16.11.25/255.255.255.0 ´ËÁ´Â·ÔÚ system2 Ê¹ÓÃÏÂÃæµÄµØÖ· 172.16.11.35/255.255.255.0 ´ËÁ´Â·ÔÚÏµÍ³ÖØÆôÖ®ºóÒÀÈ»±£³ÖÕı³£×´Ì¬
-	man teamd.conf  #/example¡ún  ,ÕÒµ½'{"runner":{"name":"activebackup"}}'
+5.é…ç½®èšåˆé“¾è·¯ åœ¨ system1.rhce.cc å’Œ system2.rhce.cc ä¹‹é—´æŒ‰ä»¥ä¸‹è¦æ±‚é…ç½®ä¸€ä¸ªé“¾è·¯ï¼š æ­¤é“¾è·¯ä½¿ç”¨æ¥å£ eth1 å’Œ eth2 æ­¤é“¾è·¯åœ¨ä¸€ä¸ªæ¥å£å¤±æ•ˆæ—¶ä»ç„¶èƒ½å·¥ä½œ æ­¤é“¾è·¯åœ¨ system1 ä½¿ç”¨ä¸‹é¢çš„åœ°å€ 172.16.11.25/255.255.255.0 æ­¤é“¾è·¯åœ¨ system2 ä½¿ç”¨ä¸‹é¢çš„åœ°å€ 172.16.11.35/255.255.255.0 æ­¤é“¾è·¯åœ¨ç³»ç»Ÿé‡å¯ä¹‹åä¾ç„¶ä¿æŒæ­£å¸¸çŠ¶æ€
+	man teamd.conf  #/exampleâ†’n  ,æ‰¾åˆ°'{"runner":{"name":"activebackup"}}'
 	nmcli connection add type team con-name team0 ifname team0 config {"runner":{"name":"activebackup"}}'
 	nmcli connection add type team-slave ifname eth1 master team0
 	nmcli connection add type team-slave ifname eth2 master team0
@@ -230,20 +230,20 @@ Root ÃÜÂë£ºredhat
 	systemctl restart network
 	
 
-#Á½Ì¨ĞéÄâ»úÍ¬Ñù²Ù×÷(system2.eth3.eth4.»òÍ¬ÑùÎªeth1.eth2)
+#ä¸¤å°è™šæ‹ŸæœºåŒæ ·æ“ä½œ(system2.eth3.eth4.æˆ–åŒæ ·ä¸ºeth1.eth2)
 
-6.ÅäÖÃIPv6 µØÖ· ÔÚÄúµÄ¿¼ÊÔÏµÍ³ÉÏÅäÖÃ½Ó¿Ú eth0 Ê¹ÓÃÏÂÁĞ IPv6 µØÖ·£º system1 ÉÏµÄµØÖ·Ó¦¸ÃÊÇ 200e:ac18::e0a/64 system2 ÉÏµÄµØÖ·Ó¦¸ÃÊÇ 200e:ac18::e14/64 Á½¸öÏµÍ³±ØĞëÄÜÓëÍøÂç 200e:ac18/64 ÄÚµÄÏµÍ³Í¨ĞÅ¡£ µØÖ·±ØĞëÔÚÖØÆôºóÒÀ¾ÉÉúĞ§¡£ Á½¸öÏµÍ³±ØĞë±£³Öµ±Ç°µÄ IPv4 µØÖ·²¢ÄÜÍ¨ĞÅ¡£
+6.é…ç½®IPv6 åœ°å€ åœ¨æ‚¨çš„è€ƒè¯•ç³»ç»Ÿä¸Šé…ç½®æ¥å£ eth0 ä½¿ç”¨ä¸‹åˆ— IPv6 åœ°å€ï¼š system1 ä¸Šçš„åœ°å€åº”è¯¥æ˜¯ 200e:ac18::e0a/64 system2 ä¸Šçš„åœ°å€åº”è¯¥æ˜¯ 200e:ac18::e14/64 ä¸¤ä¸ªç³»ç»Ÿå¿…é¡»èƒ½ä¸ç½‘ç»œ 200e:ac18/64 å†…çš„ç³»ç»Ÿé€šä¿¡ã€‚ åœ°å€å¿…é¡»åœ¨é‡å¯åä¾æ—§ç”Ÿæ•ˆã€‚ ä¸¤ä¸ªç³»ç»Ÿå¿…é¡»ä¿æŒå½“å‰çš„ IPv4 åœ°å€å¹¶èƒ½é€šä¿¡ã€‚
 	nmcli connection modify 'system eth0' ipv6.method manual ipv6.addresses 200c:ac18::e0a/64 connection.autoconnect yes
 	nmcli connrction up 'system eth0'
 	systemctl restart network
 	ifconfig
 	ping6 200c:ac18::e0a
-	#Á½Ì¨ĞéÄâ»úÍ¬Ñù²Ù×÷
+	#ä¸¤å°è™šæ‹ŸæœºåŒæ ·æ“ä½œ
 	
 
 
-7.ÅäÖÃ±¾µØÓÊ¼ş·şÎñ
-ÔÚÏµÍ³ system1 ºÍ system2 ÉÏ ÅäÖÃÓÊ¼ş·şÎñ£¬Âú×ãÒÔÏÂÒªÇó£º ÕâĞ©ÏµÍ³²»½ÓÊÕÍâ²¿·¢ËÍÀ´µÄÓÊ¼ş ÔÚÕâĞ©ÏµÍ³ÉÏ±¾µØ·¢ËÍµÄÈÎºÎÓÊ¼ş¶¼»á×Ô¶¯Â·ÓÉµ½ rhgls.rhce.cc ´ÓÕâĞ©ÏµÍ³ÉÏ·¢ËÍµÄÓÊ¼şÏÔÊ¾À´×ÔÓÚ rhce.cc Äú¿ÉÒÔÍ¨¹ı·¢ËÍÓÊ¼şµ½±¾µØÓÃ»§ 'dave' À´²âÊÔÄúµÄÅäÖÃ£¬ÏµÍ³ rhgls.rhce.cc ÒÑ¾­ÅäÖÃ°Ñ´Ë ÓÃ»§µÄÓÊ¼ş×ªµ½ÏÂÁĞ URLhttp://rhgls.rhce.cc/received_mail/11
+7.é…ç½®æœ¬åœ°é‚®ä»¶æœåŠ¡
+åœ¨ç³»ç»Ÿ system1 å’Œ system2 ä¸Š é…ç½®é‚®ä»¶æœåŠ¡ï¼Œæ»¡è¶³ä»¥ä¸‹è¦æ±‚ï¼š è¿™äº›ç³»ç»Ÿä¸æ¥æ”¶å¤–éƒ¨å‘é€æ¥çš„é‚®ä»¶ åœ¨è¿™äº›ç³»ç»Ÿä¸Šæœ¬åœ°å‘é€çš„ä»»ä½•é‚®ä»¶éƒ½ä¼šè‡ªåŠ¨è·¯ç”±åˆ° rhgls.rhce.cc ä»è¿™äº›ç³»ç»Ÿä¸Šå‘é€çš„é‚®ä»¶æ˜¾ç¤ºæ¥è‡ªäº rhce.cc æ‚¨å¯ä»¥é€šè¿‡å‘é€é‚®ä»¶åˆ°æœ¬åœ°ç”¨æˆ· 'dave' æ¥æµ‹è¯•æ‚¨çš„é…ç½®ï¼Œç³»ç»Ÿ rhgls.rhce.cc å·²ç»é…ç½®æŠŠæ­¤ ç”¨æˆ·çš„é‚®ä»¶è½¬åˆ°ä¸‹åˆ— URLhttp://rhgls.rhce.cc/received_mail/11
 	#netstat -antpu | grep 25
 	vim /etc/postfix/amin.cf
 	/myorigin=rhce.cc
@@ -254,11 +254,11 @@ Root ÃÜÂë£ºredhat
 	systemctl restart postfix
 	ymu install mainx -y
 	echo aaa | mail -s sss dave
-	#µ½Õæ»úä¯ÀÀÆ÷´ò¿ªhttp£º//rhgls.rhce.ccÊÕ¡¢²Å¡¢£¬²é¿´ÓÊ¼ş
+	#åˆ°çœŸæœºæµè§ˆå™¨æ‰“å¼€httpï¼š//rhgls.rhce.ccæ”¶ã€æ‰ã€ï¼ŒæŸ¥çœ‹é‚®ä»¶
 	scp /etc/postfix/main.cf system2.rhce.cc:/etc/postfix
 	
 
-8.Í¨¹ı SMB ¹²ÏíÄ¿Â¼ ÔÚ system1 ÉÏÅäÖÃ SMB ·şÎñ ÄúµÄ SMB ·şÎñÆ÷±ØĞëÊÇ STAFF ¹¤×÷×éµÄÒ»¸ö³ÉÔ± ¹²Ïí /common Ä¿Â¼ ¹²ÏíÃû±ØĞëÎª common Ö»ÓĞ rhce.cc ÓòÄÚµÄ¿Í»§¶Ë¿ÉÒÔ·ÃÎÊ common ¹²Ïí common ±ØĞëÊÇ¿ÉÒÔä¯ÀÀµÄ ÓÃ»§ andy ±ØĞëÄÜ¹»¶ÁÈ¡¹²ÏíÖĞµÄÄÚÈİ£¬Èç¹ûĞèÒªµÄ»°£¬ÑéÖ¤µÄÃÜÂëÊÇ redhat
+8.é€šè¿‡ SMB å…±äº«ç›®å½• åœ¨ system1 ä¸Šé…ç½® SMB æœåŠ¡ æ‚¨çš„ SMB æœåŠ¡å™¨å¿…é¡»æ˜¯ STAFF å·¥ä½œç»„çš„ä¸€ä¸ªæˆå‘˜ å…±äº« /common ç›®å½• å…±äº«åå¿…é¡»ä¸º common åªæœ‰ rhce.cc åŸŸå†…çš„å®¢æˆ·ç«¯å¯ä»¥è®¿é—® common å…±äº« common å¿…é¡»æ˜¯å¯ä»¥æµè§ˆçš„ ç”¨æˆ· andy å¿…é¡»èƒ½å¤Ÿè¯»å–å…±äº«ä¸­çš„å†…å®¹ï¼Œå¦‚æœéœ€è¦çš„è¯ï¼ŒéªŒè¯çš„å¯†ç æ˜¯ redhat
 	yum install samba -y
 	cd /etc/samba/
 	ls
@@ -272,13 +272,13 @@ Root ÃÜÂë£ºredhat
 	chcon -R -t samba_share_t /common/
 	id andy
 	useradd andy
-	pdbedit -L #²é¿´smbÓÃ»§
+	pdbedit -L #æŸ¥çœ‹smbç”¨æˆ·
 	yum whatprovides */smbpasswd
 	yum install samba-client -y
-	smbpasswd -a andy #Ìí¼ÓsmbÓÃ»§²¢ÉèÃÜÂëredhat
+	smbpasswd -a andy #æ·»åŠ smbç”¨æˆ·å¹¶è®¾å¯†ç redhat
 	firewall-cmd --aa-servise=samba --permanent
 
-9.ÅäÖÃ¶àÓÃ»§SMB ¹ÒÔØ ÔÚ system1 ¹²ÏíÍ¨¹ı SMB Ä¿Â¼ /miscellaneous Âú×ãÒÔÏÂÒªÇó£º ¹²ÏíÃûÎª miscellaneous ¹²ÏíÄ¿Â¼ miscellaneous Ö»ÄÜ±» rhce.cc ÓòÖĞµÄ¿Í»§¶ËÊ¹ÓÃ ¹²ÏíÄ¿Â¼ miscellaneous ±ØĞë¿ÉÒÔ±»ä¯ÀÀ ÓÃ»§ silene ±ØĞëÄÜÒÔ¶ÁµÄ·½Ê½·ÃÎÊ´Ë¹²Ïí£¬ ·ÃÎÊÃÜÂëÊÇ redhat ÓÃ»§ akira ±ØĞëÄÜÒÔ¶ÁĞ´µÄ·½Ê½·ÃÎÊ´Ë¹²Ïí£¬ ·ÃÎÊÃÜÂëÊÇ redhat ´Ë¹²ÏíÓÀ¾Ã¹ÒÔØÔÚ system2.rhce.cc ÉÏµÄ /mnt/multi Ä¿Â¼, ²¢Ê¹ÓÃÓÃ»§ silene ×÷ÎªÈÏ Ö¤ ÈÎºÎÓÃ»§¿ÉÒÔÍ¨¹ıÓÃ»§ akira À´ÁÙÊ±»ñÈ¡Ğ´µÄÈ¨ÏŞ
+9.é…ç½®å¤šç”¨æˆ·SMB æŒ‚è½½ åœ¨ system1 å…±äº«é€šè¿‡ SMB ç›®å½• /miscellaneous æ»¡è¶³ä»¥ä¸‹è¦æ±‚ï¼š å…±äº«åä¸º miscellaneous å…±äº«ç›®å½• miscellaneous åªèƒ½è¢« rhce.cc åŸŸä¸­çš„å®¢æˆ·ç«¯ä½¿ç”¨ å…±äº«ç›®å½• miscellaneous å¿…é¡»å¯ä»¥è¢«æµè§ˆ ç”¨æˆ· silene å¿…é¡»èƒ½ä»¥è¯»çš„æ–¹å¼è®¿é—®æ­¤å…±äº«ï¼Œ è®¿é—®å¯†ç æ˜¯ redhat ç”¨æˆ· akira å¿…é¡»èƒ½ä»¥è¯»å†™çš„æ–¹å¼è®¿é—®æ­¤å…±äº«ï¼Œ è®¿é—®å¯†ç æ˜¯ redhat æ­¤å…±äº«æ°¸ä¹…æŒ‚è½½åœ¨ system2.rhce.cc ä¸Šçš„ /mnt/multi ç›®å½•, å¹¶ä½¿ç”¨ç”¨æˆ· silene ä½œä¸ºè®¤ è¯ ä»»ä½•ç”¨æˆ·å¯ä»¥é€šè¿‡ç”¨æˆ· akira æ¥ä¸´æ—¶è·å–å†™çš„æƒé™
 	cd /etc/samba
 	mkdir /miscellaneous
 	vim smb.conf
@@ -294,18 +294,18 @@ Root ÃÜÂë£ºredhat
 	chcon -R -t samba_share_t /miscellaneous/
 	useradd silene
 	useradd akira
-	smbpasswd -a silene  #ÃÜÂëÉèÎªÖÆ¶¨ÃÜÂë
-	smbpasswd -a akira   #ÃÜÂëÉèÎªÖÆ¶¨ÃÜÂë
+	smbpasswd -a silene  #å¯†ç è®¾ä¸ºåˆ¶å®šå¯†ç 
+	smbpasswd -a akira   #å¯†ç è®¾ä¸ºåˆ¶å®šå¯†ç 
 
 	
-µ½system2
+åˆ°system2
 	mkdir /mnt/multi
 	yum install cifs* samba-client* -y
-	samclient -L //system1.rhce.cc -U andy%redhat  #²é¿´À´×Ôrhce.ccµÄ¹²Ïí
+	samclient -L //system1.rhce.cc -U andy%redhat  #æŸ¥çœ‹æ¥è‡ªrhce.ccçš„å…±äº«
 	mount -o multiuser,sec=ntlmssp,username=silene,passwd=redhat //system1.rhce.cc/miscellaneous /mnt/multi
 	useradd tom1
 	su - tom1
-	cifscreds add systemrhce.cc -u akira #ÆÕÍ¨ÓÃ»§Í¨¹ıakira»ñµÃÔİÊ±¶ÁĞ´È¨ÏŞ
+	cifscreds add systemrhce.cc -u akira #æ™®é€šç”¨æˆ·é€šè¿‡akiraè·å¾—æš‚æ—¶è¯»å†™æƒé™
 	cd /mnt/multi
 	touch aaa
 	echo '//system1.rhce.cc/miscellaneous /mnt/multi cifs defaults,multiuser,sec=ntlmssp,username=silene,passwd=redhat 0 0
@@ -313,7 +313,7 @@ Root ÃÜÂë£ºredhat
 	
 	
 
-10.ÅäÖÃNFS ·şÎñ ÔÚ system1 ÅäÖÃNFS ·şÎñ£¬ÒªÇóÈçÏÂ: ÒÔÖ»¶ÁµÄ·½Ê½¹²ÏíÄ¿Â¼ /public Í¬Ê±Ö»ÄÜ±» rhce.cc ÓòÖĞµÄÏµÍ³·ÃÎÊ ÒÔ¶ÁĞ´µÄ·½Ê½¹²ÏíÄ¿Â¼ /protected ÄÜ±» rhce.cc ÓòÖĞµÄÏµÍ³·ÃÎÊ ·ÃÎÊ /protected ĞèÒªÍ¨¹ı Kerberos °²È«¼ÓÃÜ£¬ Äú¿ÉÒÔÊ¹ÓÃÏÂÃæ URL Ìá¹©µÄÃÜÔ¿ http://host.rhce.cc/materials/nfs_server.keytab. Ä¿Â¼ /protected Ó¦¸Ã°üº¬ÃûÎª confidential ÓµÓĞÈËÎª ldapuser11 µÄ×ÓÄ¿Â¼ ÓÃ»§ ldapuser11 ÄÜÒÔ¶ÁĞ´·½Ê½·ÃÎÊ /protected/confidential
+10.é…ç½®NFS æœåŠ¡ åœ¨ system1 é…ç½®NFS æœåŠ¡ï¼Œè¦æ±‚å¦‚ä¸‹: ä»¥åªè¯»çš„æ–¹å¼å…±äº«ç›®å½• /public åŒæ—¶åªèƒ½è¢« rhce.cc åŸŸä¸­çš„ç³»ç»Ÿè®¿é—® ä»¥è¯»å†™çš„æ–¹å¼å…±äº«ç›®å½• /protected èƒ½è¢« rhce.cc åŸŸä¸­çš„ç³»ç»Ÿè®¿é—® è®¿é—® /protected éœ€è¦é€šè¿‡ Kerberos å®‰å…¨åŠ å¯†ï¼Œ æ‚¨å¯ä»¥ä½¿ç”¨ä¸‹é¢ URL æä¾›çš„å¯†é’¥ http://host.rhce.cc/materials/nfs_server.keytab. ç›®å½• /protected åº”è¯¥åŒ…å«åä¸º confidential æ‹¥æœ‰äººä¸º ldapuser11 çš„å­ç›®å½• ç”¨æˆ· ldapuser11 èƒ½ä»¥è¯»å†™æ–¹å¼è®¿é—® /protected/confidential
 	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=nfs accept' --permanent
 	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=rpc-bind accept' --permanent
 	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=mountd accept' --permanent
@@ -323,14 +323,14 @@ Root ÃÜÂë£ºredhat
 	/public 192.168.122.0/24(ro,sync)
 	/protected *(rw,sync,sec=krb5p)
 	wq
-	wget -O /etc/krb5.keytab http¡­¡­ 
+	wget -O /etc/krb5.keytab httpâ€¦â€¦ 
 	vim /etc/sysconfig/nfs
 	RPCNFSDARGS='-V 4.2'
 	wq
 	mkdir /protected/confidential
 	chown ldapuser11 /protected/confidential
 	ls -ld /protected/confidential
-	ls -ldZ /protected/confidential #²é¿´ÉÏÏÂÎÄ
+	ls -ldZ /protected/confidential #æŸ¥çœ‹ä¸Šä¸‹æ–‡
 	chcon -R -t public_content_t /protected/confidential
 	systemctl start nfs-server
 	systemctl start nfs
@@ -339,20 +339,20 @@ Root ÃÜÂë£ºredhat
 	systemctl enable nfs-secure-server
 	
 
-11. ¹ÒÔØÒ»¸ö NFS ¹²Ïí ÔÚ system2 ÉÏ¹ÒÔØÒ»¸öÀ´×Ô system1.rhce.cc µÄ NFS ¹²Ïí£¬ ²¢·ûºÏÏÂÁĞÒªÇó£º /public ¹ÒÔØÔÚÏÂÃæµÄÄ¿Â¼ÉÏ /mnt/nfsmount /protected ¹ÒÔØÔÚÏÂÃæµÄÄ¿Â¼ÉÏ /mnt/nfssecure ²¢Ê¹ÓÃ°²È«µÄ·½Ê½£¬ÃÜÔ¿ÏÂÔØ URL Èç ÏÂ£º http://host.rhce.cc/materials/nfs_client.keytab. ÓÃ»§ ldapusre11 ÄÜ¹»ÔÚ /mnt/nfssecure/confidential ÉÏ´´½¨ÎÄ¼ş,ÕâĞ©ÎÄ¼şÏµÍ³ÔÚÏµÍ³Æô¶¯Ê±×Ô¶¯¹ÒÔØ
+11. æŒ‚è½½ä¸€ä¸ª NFS å…±äº« åœ¨ system2 ä¸ŠæŒ‚è½½ä¸€ä¸ªæ¥è‡ª system1.rhce.cc çš„ NFS å…±äº«ï¼Œ å¹¶ç¬¦åˆä¸‹åˆ—è¦æ±‚ï¼š /public æŒ‚è½½åœ¨ä¸‹é¢çš„ç›®å½•ä¸Š /mnt/nfsmount /protected æŒ‚è½½åœ¨ä¸‹é¢çš„ç›®å½•ä¸Š /mnt/nfssecure å¹¶ä½¿ç”¨å®‰å…¨çš„æ–¹å¼ï¼Œå¯†é’¥ä¸‹è½½ URL å¦‚ ä¸‹ï¼š http://host.rhce.cc/materials/nfs_client.keytab. ç”¨æˆ· ldapusre11 èƒ½å¤Ÿåœ¨ /mnt/nfssecure/confidential ä¸Šåˆ›å»ºæ–‡ä»¶,è¿™äº›æ–‡ä»¶ç³»ç»Ÿåœ¨ç³»ç»Ÿå¯åŠ¨æ—¶è‡ªåŠ¨æŒ‚è½½
 	showmount -e system1.rhce.cc
 	mkdir /mnt/nfsmount
 	mkdir /mnt/nfssrcure
 	echo 'system1.rhce.cc:/public /mnt/nfsmount nfs defaults 0 0' >> /etc/fstab
 	mount -a
 	df -hT
-	wget -O /etc/krb5.keytab http¡­¡­
+	wget -O /etc/krb5.keytab httpâ€¦â€¦
 	systemctl start nfs-secure
 	systemctl enable nfs-secure
 	echo 'system1.rhce.cc:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2 0 0' >> /etc/fstab
 	mount -a
 
-#system1ÉÏ²Ù×÷
+#system1ä¸Šæ“ä½œ
 	ssh ldapuser11@system2.rhce.cc
 	cd /mnt/nfssecure/confidential
 	ls
@@ -360,23 +360,23 @@ Root ÃÜÂë£ºredhat
 	ls
 	
 
-12. ÅäÖÃ web Õ¾µã system1 ÉÏÅäÖÃÒ»¸öÕ¾µã http://system1.rhce.cc È»ºóÖ´ĞĞÏÂÊö²½Öè£º ´Ó http://rhgls.rhce.cc/materials/station.html ÏÂÔØÎÄ¼ş£¬²¢ÇÒ½«ÎÄ¼şÖØÃüÃûÎª index.html ²»ÒªĞŞ¸Ä´ËÎÄ¼şµÄÄÚÈİ ½«ÎÄ¼ş index.html ¿½±´µ½ÄúµÄ web ·şÎñÆ÷µÄ DocumentRoot Ä¿Â¼ÏÂ À´×ÔÓÚ rhce.cc ÓòµÄ¿Í»§¶Ë¿ÉÒÔ·ÃÎÊ´Ë Web·şÎñ À´×ÔÓÚ my133t.org ÓòµÄ¿Í»§¶Ë¾Ü¾ø·ÃÎÊ´ËWeb·şÎñ
+12. é…ç½® web ç«™ç‚¹ system1 ä¸Šé…ç½®ä¸€ä¸ªç«™ç‚¹ http://system1.rhce.cc ç„¶åæ‰§è¡Œä¸‹è¿°æ­¥éª¤ï¼š ä» http://rhgls.rhce.cc/materials/station.html ä¸‹è½½æ–‡ä»¶ï¼Œå¹¶ä¸”å°†æ–‡ä»¶é‡å‘½åä¸º index.html ä¸è¦ä¿®æ”¹æ­¤æ–‡ä»¶çš„å†…å®¹ å°†æ–‡ä»¶ index.html æ‹·è´åˆ°æ‚¨çš„ web æœåŠ¡å™¨çš„ DocumentRoot ç›®å½•ä¸‹ æ¥è‡ªäº rhce.cc åŸŸçš„å®¢æˆ·ç«¯å¯ä»¥è®¿é—®æ­¤ WebæœåŠ¡ æ¥è‡ªäº my133t.org åŸŸçš„å®¢æˆ·ç«¯æ‹’ç»è®¿é—®æ­¤WebæœåŠ¡
 	yum groupinstall web* -y
 	vim /etc/httpd/conf/httpd.conf
 	ServerName system1.rhce.cc:80
 	wq
-	wget -O /var/www/html/index.html http¡­¡­
+	wget -O /var/www/html/index.html httpâ€¦â€¦
 	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=http accept' --permanent
 	systemctl start httpd
 	systemctl enable httpd
 
 	
-13. ÅäÖÃ°²È« web ·şÎñ Îª Õ¾ µã http://system1.rhce.cc Åä ÖÃ TLS ¼Ó ÃÜ Ò» ¸ö ÒÑ Ç© Ãû Ö¤ Êé ´Ó http://host.rhce.cc/materials/system1.crt »ñ È¡ ´Ë Ö¤ Êé µÄ ÃÜ Ô¿ ´Ó http://host.rhce.cc/materials/system1.key »ñ È¡ ´Ë Ö¤ Êé µÄ Ç© Ãû ÊÚ È¨ ĞÅ Ï¢ ´Ó http://host.rhce.cc/materials/domain11.crt »ñÈ¡
+13. é…ç½®å®‰å…¨ web æœåŠ¡ ä¸º ç«™ ç‚¹ http://system1.rhce.cc é… ç½® TLS åŠ  å¯† ä¸€ ä¸ª å·² ç­¾ å è¯ ä¹¦ ä» http://host.rhce.cc/materials/system1.crt è· å– æ­¤ è¯ ä¹¦ çš„ å¯† é’¥ ä» http://host.rhce.cc/materials/system1.key è· å– æ­¤ è¯ ä¹¦ çš„ ç­¾ å æˆ æƒ ä¿¡ æ¯ ä» http://host.rhce.cc/materials/domain11.crt è·å–
 -----------------------------------
 	cp /usr/share/doc/httpd-2.4.6/httpd-vhosts.conf /etc/httpd/conf.d/vhost.conf
-	wget -O ¡­¡­ http://host.rhce.cc/materials/system1.crt
-	wget -O ¡­¡­ http://host.rhce.cc/materials/system1.key
-	wget -O ¡­¡­ http://host.rhce.cc/materials/domain11.crt
+	wget -O â€¦â€¦ http://host.rhce.cc/materials/system1.crt
+	wget -O â€¦â€¦ http://host.rhce.cc/materials/system1.key
+	wget -O â€¦â€¦ http://host.rhce.cc/materials/domain11.crt
 	vim /etc/httpd/conf.d/vhost.conf
 	<VirtualHost system1.rhce.cc:80>
 		DocumentRoot /var/www/html
@@ -386,21 +386,21 @@ Root ÃÜÂë£ºredhat
 		DocumentRoot /var/www/html
 		ServerName system1.rhce.cc
 			SSLEngine on
-			SSLCertificateFile /¡­¡­.crt
-			SSLCertificatekeyFile /¡­¡­.key
-			SSLCertificateChainFile /¡­¡­.crt
-		#SSLlÂ·¾¶ÔÚ/etc/httpd/conf.d/ssl.conf¿É²éÕÒ
-		#²¢ÇÒĞŞ¸Ässl.confÎÄ¼şÖĞ
+			SSLCertificateFile /â€¦â€¦.crt
+			SSLCertificatekeyFile /â€¦â€¦.key
+			SSLCertificateChainFile /â€¦â€¦.crt
+		#SSLlè·¯å¾„åœ¨/etc/httpd/conf.d/ssl.confå¯æŸ¥æ‰¾
+		#å¹¶ä¸”ä¿®æ”¹ssl.confæ–‡ä»¶ä¸­
 		#SSLRngine off
 	</VirtualHost>
 	wq
 	systemctl restart httpd
 	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 service name=https accept' --permanent
-	ÎïÀí»ú·ÃÎÊhttps://system1.rhce.cc
+	ç‰©ç†æœºè®¿é—®https://system1.rhce.cc
 	
 	
-14. ÅäÖÃĞéÄâÖ÷»ú ÔÚ system1 ÉÏÀ©Õ¹ÄúµÄ web ·şÎñÆ÷£¬ÎªÕ¾µã http://www..rhce.cc ´´½¨Ò»¸öĞéÄâÖ÷»ú£¬È»ºó Ö´ĞĞÏÂÊö²½Öè£º ÉèÖÃ DocumentRoot Îª /var/www/virtual ´Ó http://rhgls.rhce.cc/materials/www.html ÏÂÔØÎÄ¼ş²¢ÖØÃüÃûÎª index.html ²»Òª¶ÔÎÄ¼ş index.html µÄÄÚÈİ×öÈÎºÎĞŞ¸Ä ½«ÎÄ¼ş index.html ·Åµ½ĞéÄâÖ÷»úµÄ DocumentRoot Ä¿Â¼ÏÂ È·±£ andy ÓÃ»§ÄÜ¹»ÔÚ /var/www/virtual Ä¿Â¼ÏÂ´´½¨ÎÄ¼ş
-×¢Òâ£ºÔ­Ê¼Õ¾µã http://system1.rhce.cc ±ØĞëÈÔÈ»ÄÜ¹»·ÃÎÊ£¬ Ãû³Æ·şÎñÆ÷ rhce.cc Ìá¹©¶ÔÖ÷ »úÃû www.rhce.cc µÄÓòÃû½âÎö
+14. é…ç½®è™šæ‹Ÿä¸»æœº åœ¨ system1 ä¸Šæ‰©å±•æ‚¨çš„ web æœåŠ¡å™¨ï¼Œä¸ºç«™ç‚¹ http://www..rhce.cc åˆ›å»ºä¸€ä¸ªè™šæ‹Ÿä¸»æœºï¼Œç„¶å æ‰§è¡Œä¸‹è¿°æ­¥éª¤ï¼š è®¾ç½® DocumentRoot ä¸º /var/www/virtual ä» http://rhgls.rhce.cc/materials/www.html ä¸‹è½½æ–‡ä»¶å¹¶é‡å‘½åä¸º index.html ä¸è¦å¯¹æ–‡ä»¶ index.html çš„å†…å®¹åšä»»ä½•ä¿®æ”¹ å°†æ–‡ä»¶ index.html æ”¾åˆ°è™šæ‹Ÿä¸»æœºçš„ DocumentRoot ç›®å½•ä¸‹ ç¡®ä¿ andy ç”¨æˆ·èƒ½å¤Ÿåœ¨ /var/www/virtual ç›®å½•ä¸‹åˆ›å»ºæ–‡ä»¶
+æ³¨æ„ï¼šåŸå§‹ç«™ç‚¹ http://system1.rhce.cc å¿…é¡»ä»ç„¶èƒ½å¤Ÿè®¿é—®ï¼Œ åç§°æœåŠ¡å™¨ rhce.cc æä¾›å¯¹ä¸» æœºå www.rhce.cc çš„åŸŸåè§£æ
 --------------------------------
 	mkdir /var/www/virtual
 	wget -O /var/www/virtual/index.html http://rhgls.rhce.cc/materials/www.html
@@ -410,15 +410,15 @@ Root ÃÜÂë£ºredhat
 		DocumentRoot /var/www/virtual
 		ServerName www.rhce.cc
 	</VirtualHost>
-	<Directory "/var/www/virtual">   #ĞÂÄ¿Â¼Â·¾¶
+	<Directory "/var/www/virtual">   #æ–°ç›®å½•è·¯å¾„
 		ALLowOverride None
 		Require all granted
-	#Ä£°å<Directory>ÔÚvim /etc/httpd/conf/httpd.conf¿É²é
+	#æ¨¡æ¿<Directory>åœ¨vim /etc/httpd/conf/httpd.confå¯æŸ¥
 	</Directory>   
 	wq
 	setfacl -m u:andy:rwx /var/www/virtual
 	
-15. ÅäÖÃ web ÄÚÈİµÄ·ÃÎÊ ÔÚÄúµÄsystem1 ÉÏµÄ web ·şÎñÆ÷µÄ DocumentRoot Ä¿Â¼ÏÂ ´´½¨Ò»¸öÃûÎª secret µÄÄ¿Â¼£¬ ÒªÇóÈçÏÂ£º ´Ó http://rhgls.rhce.cc/materials/private.html ÏÂÔØÒ»¸öÎÄ¼ş¸±±¾µ½Õâ¸öÄ¿Â¼£¬²¢ÇÒÖØÃüÃû Îª index.html¡£ ²»Òª¶ÔÕâ¸öÎÄ¼şµÄÄÚÈİ×öÈÎºÎĞŞ¸Ä¡£ ´Ó system1 ÉÏ£¬ÈÎºÎÈË¶¼¿ÉÒÔä¯ÀÀ secret µÄÄÚÈİ£¬ µ«ÊÇ´ÓÆäËüÏµÍ³²»ÄÜ·ÃÎÊÕâ¸öÄ¿ Â¼µÄÄÚÈİ
+15. é…ç½® web å†…å®¹çš„è®¿é—® åœ¨æ‚¨çš„system1 ä¸Šçš„ web æœåŠ¡å™¨çš„ DocumentRoot ç›®å½•ä¸‹ åˆ›å»ºä¸€ä¸ªåä¸º secret çš„ç›®å½•ï¼Œ è¦æ±‚å¦‚ä¸‹ï¼š ä» http://rhgls.rhce.cc/materials/private.html ä¸‹è½½ä¸€ä¸ªæ–‡ä»¶å‰¯æœ¬åˆ°è¿™ä¸ªç›®å½•ï¼Œå¹¶ä¸”é‡å‘½å ä¸º index.htmlã€‚ ä¸è¦å¯¹è¿™ä¸ªæ–‡ä»¶çš„å†…å®¹åšä»»ä½•ä¿®æ”¹ã€‚ ä» system1 ä¸Šï¼Œä»»ä½•äººéƒ½å¯ä»¥æµè§ˆ secret çš„å†…å®¹ï¼Œ ä½†æ˜¯ä»å…¶å®ƒç³»ç»Ÿä¸èƒ½è®¿é—®è¿™ä¸ªç›® å½•çš„å†…å®¹
 ------------------------------------
 	mkdir /var/www/html/secret
 	mkdir /var/www/virtual/secret
@@ -441,12 +441,12 @@ Root ÃÜÂë£ºredhat
 	#elinks -dump http://system1.rhce.cc/secret/index.html
 
 
-16. ÊµÏÖ¶¯Ì¬ WebÄÚÈİ ÔÚ system1 ÉÏÅäÖÃÌá¹©¶¯Ì¬ WebÄÚÈİ£¬ÒªÇóÈçÏÂ£º
-¶¯Ì¬ÄÚÈİÓÉÃûÎª dynamic.rhce.cc µÄĞéÄâÖ÷»úÌá¹© ĞéÄâÖ÷»úÕìÌıÔÚ¶Ë¿Ú 8998 ´Ó http://rhgls.rhce.cc/materials/webapp.wsgi ÏÂÔØÒ»¸ö½Å±¾£¬È»ºó·ÅÔÚÊÊµ±µÄÎ»ÖÃ£¬ ÎŞ ÂÛÈçºÎ²»ÒªÇóĞŞ¸Ä´ËÎÄ¼şµÄÄÚÈİ ¿Í»§¶Ë·ÃÎÊ http://dynamic.rhce.cc:8998/ Ê± Ó¦¸Ã½ÓÊÕµ½¶¯Ì¬Éú³ÉµÄweb Ò³Ãæ ´Ë http://dynamic.rhce.cc:8998/ ±ØĞëÄÜ±» rhce.cc ÓòÄÚµÄËùÓĞÏµÍ³·ÃÎÊ
+16. å®ç°åŠ¨æ€ Webå†…å®¹ åœ¨ system1 ä¸Šé…ç½®æä¾›åŠ¨æ€ Webå†…å®¹ï¼Œè¦æ±‚å¦‚ä¸‹ï¼š
+åŠ¨æ€å†…å®¹ç”±åä¸º dynamic.rhce.cc çš„è™šæ‹Ÿä¸»æœºæä¾› è™šæ‹Ÿä¸»æœºä¾¦å¬åœ¨ç«¯å£ 8998 ä» http://rhgls.rhce.cc/materials/webapp.wsgi ä¸‹è½½ä¸€ä¸ªè„šæœ¬ï¼Œç„¶åæ”¾åœ¨é€‚å½“çš„ä½ç½®ï¼Œ æ—  è®ºå¦‚ä½•ä¸è¦æ±‚ä¿®æ”¹æ­¤æ–‡ä»¶çš„å†…å®¹ å®¢æˆ·ç«¯è®¿é—® http://dynamic.rhce.cc:8998/ æ—¶ åº”è¯¥æ¥æ”¶åˆ°åŠ¨æ€ç”Ÿæˆçš„web é¡µé¢ æ­¤ http://dynamic.rhce.cc:8998/ å¿…é¡»èƒ½è¢« rhce.cc åŸŸå†…çš„æ‰€æœ‰ç³»ç»Ÿè®¿é—®
 ------------------------------------
 	vim /etc/httpd/conf/httpd.conf
 	+listen 8998
-	#²¢ÕÒµ½semanage port -a -t http_port_t -p tcp 8998
+	#å¹¶æ‰¾åˆ°semanage port -a -t http_port_t -p tcp 8998
 	wq
 	semanage port -a -t http_port_t -p tcp 8998
 	yum whatprovides */semanage
@@ -464,10 +464,10 @@ Root ÃÜÂë£ºredhat
 	wq
 	systemctl restart httpd
 	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.0/24 port port=8998 protocol=tcp accept' --permanent
-	ÎïÀí»ú·ÃÎÊdynamic¡£rhce.cc£º8998
+	ç‰©ç†æœºè®¿é—®dynamicã€‚rhce.ccï¼š8998
 	
 	
-17. ´´½¨Ò»¸ö½Å±¾ ÔÚ system1 ÉÏ´´½¨Ò»¸öÃûÎª /root/script µÄ½Å±¾£¬ ÈÃÆäÌá¹©ÏÂÁĞÌØĞÔ£º µ±ÔËĞĞ /root/script foo£¬Êä³öÎª bar µ±ÔËĞĞ /root/script bar£¬Êä³öÎª foo µ±Ã»ÓĞÈÎºÎ²ÎÊı»òÕß²ÎÊı²»ÊÇ foo »òÕß bar Ê±£¬ Æä´íÎóÊä³ö²úÉúÒÔÏÂµÄĞÅÏ¢£º/root/script foo|bar¡£
+17. åˆ›å»ºä¸€ä¸ªè„šæœ¬ åœ¨ system1 ä¸Šåˆ›å»ºä¸€ä¸ªåä¸º /root/script çš„è„šæœ¬ï¼Œ è®©å…¶æä¾›ä¸‹åˆ—ç‰¹æ€§ï¼š å½“è¿è¡Œ /root/script fooï¼Œè¾“å‡ºä¸º bar å½“è¿è¡Œ /root/script barï¼Œè¾“å‡ºä¸º foo å½“æ²¡æœ‰ä»»ä½•å‚æ•°æˆ–è€…å‚æ•°ä¸æ˜¯ foo æˆ–è€… bar æ—¶ï¼Œ å…¶é”™è¯¯è¾“å‡ºäº§ç”Ÿä»¥ä¸‹çš„ä¿¡æ¯ï¼š/root/script foo|barã€‚
 	vim /root/script
 	#!/bin/bash
 	case $1 in
@@ -481,7 +481,7 @@ Root ÃÜÂë£ºredhat
 	esac
 	wq
 	
-18. ´´½¨Ò»¸öÌí¼ÓÓÃ»§µÄ½Å±¾ ÔÚ system1 ÉÏ´´½¨Ò»¸ö½Å±¾£¬ÃûÎª /root/mkusers, ´Ë½Å±¾ÄÜÊµÏÖÎªÏµÍ³ system1 ´´½¨±¾µØ ÓÃ»§, ²¢ÇÒÕâĞ©ÓÃ»§ µÄÓÃ»§ÃûÀ´×ÔÒ»¸ö°üº¬ÓÃ»§ÃûÁĞ±íµÄÎÄ¼ş¡£Í¬Ê±Âú×ãÏÂÁĞÒªÇó£º ´Ë½Å±¾ÒªÇóÌá¹©Ò»¸ö²ÎÊı£¬´Ë²ÎÊı¾ÍÊÇ°üº¬ÓÃ»§ÃûÁĞ±íµÄÎÄ¼ş Èç¹ûÃ»ÓĞÌá¹©²ÎÊı£¬´Ë½Å±¾Ó¦¸Ã¸ø³öÏÂÃæµÄÌáÊ¾ĞÅÏ¢ Usage:/root/mkusers È»ºóÍË³ö²¢ ·µ»ØÏàÓ¦µÄÖµ Èç¹ûÌá¹©Ò»¸ö²»´æÔÚµÄÎÄ¼şÃû£¬´Ë½Å±¾Ó¦¸Ã¸ø³öÏÂÃæµÄÌáÊ¾ĞÅÏ¢ Input filenot found È» ºóÍË³ö²¢·µ»ØÏàÓ¦µÄÖµ ´´½¨µÄÓÃ»§µÇÂ¼ shell Îª /bin/false ´Ë½Å±¾²»ĞèÒªÎªÓÃ»§ÉèÖÃÃÜÂë Äú¿ÉÒÔ´ÓÏÂÃæµÄ URL »ñÈ¡ÓÃ»§ÃûÁĞ±í×÷Îª²âÊÔÓÃ http://rhgls.rhce.cc/materials/userlist¡£
+18. åˆ›å»ºä¸€ä¸ªæ·»åŠ ç”¨æˆ·çš„è„šæœ¬ åœ¨ system1 ä¸Šåˆ›å»ºä¸€ä¸ªè„šæœ¬ï¼Œåä¸º /root/mkusers, æ­¤è„šæœ¬èƒ½å®ç°ä¸ºç³»ç»Ÿ system1 åˆ›å»ºæœ¬åœ° ç”¨æˆ·, å¹¶ä¸”è¿™äº›ç”¨æˆ· çš„ç”¨æˆ·åæ¥è‡ªä¸€ä¸ªåŒ…å«ç”¨æˆ·ååˆ—è¡¨çš„æ–‡ä»¶ã€‚åŒæ—¶æ»¡è¶³ä¸‹åˆ—è¦æ±‚ï¼š æ­¤è„šæœ¬è¦æ±‚æä¾›ä¸€ä¸ªå‚æ•°ï¼Œæ­¤å‚æ•°å°±æ˜¯åŒ…å«ç”¨æˆ·ååˆ—è¡¨çš„æ–‡ä»¶ å¦‚æœæ²¡æœ‰æä¾›å‚æ•°ï¼Œæ­¤è„šæœ¬åº”è¯¥ç»™å‡ºä¸‹é¢çš„æç¤ºä¿¡æ¯ Usage:/root/mkusers ç„¶åé€€å‡ºå¹¶ è¿”å›ç›¸åº”çš„å€¼ å¦‚æœæä¾›ä¸€ä¸ªä¸å­˜åœ¨çš„æ–‡ä»¶åï¼Œæ­¤è„šæœ¬åº”è¯¥ç»™å‡ºä¸‹é¢çš„æç¤ºä¿¡æ¯ Input filenot found ç„¶ åé€€å‡ºå¹¶è¿”å›ç›¸åº”çš„å€¼ åˆ›å»ºçš„ç”¨æˆ·ç™»å½• shell ä¸º /bin/false æ­¤è„šæœ¬ä¸éœ€è¦ä¸ºç”¨æˆ·è®¾ç½®å¯†ç  æ‚¨å¯ä»¥ä»ä¸‹é¢çš„ URL è·å–ç”¨æˆ·ååˆ—è¡¨ä½œä¸ºæµ‹è¯•ç”¨ http://rhgls.rhce.cc/materials/userlistã€‚
 	
 	vim /root/mkusers
 	#!/bin/bash
@@ -498,14 +498,14 @@ Root ÃÜÂë£ºredhat
 		usaeradd -s /bin/fale $a
 	done
 
-19. ÅäÖÃ iSCSI ·şÎñ¶Ë ÅäÖÃ system1 Ìá¹©Ò»¸öiSCSI ·şÎñ ´ÅÅÌÃûÎª iqn.2014-09.com.example.domain11:system1 £¬ ²¢·ûºÏÏÂÁĞÒªÇó£º ·şÎñ¶Ë¿ÚÎª 3260 Ê¹ÓÃ iscsi_vol ×÷Æäºó¶Ë¾í Æä´óĞ¡Îª 3G ´Ë·şÎñÖ»ÄÜ±» system2.rhce.cc ·ÃÎÊ¡£
+19. é…ç½® iSCSI æœåŠ¡ç«¯ é…ç½® system1 æä¾›ä¸€ä¸ªiSCSI æœåŠ¡ ç£ç›˜åä¸º iqn.2014-09.com.example.domain11:system1 ï¼Œ å¹¶ç¬¦åˆä¸‹åˆ—è¦æ±‚ï¼š æœåŠ¡ç«¯å£ä¸º 3260 ä½¿ç”¨ iscsi_vol ä½œå…¶åç«¯å· å…¶å¤§å°ä¸º 3G æ­¤æœåŠ¡åªèƒ½è¢« system2.rhce.cc è®¿é—®ã€‚
 
 	yum list target*
 	yum install targetd targetcli -y
 	systemctl start targetd
 	host system2.rhce.cc
 	firewall-cmd --add-rich-rule 'rule family=ipv4 source address=192.168.122.200 port port=3260 protocol=tcp accept' --permanent
-	fdisk /dev/vda #´´½¨Ò»¸ö3GµÄ·ÖÇø
+	fdisk /dev/vda #åˆ›å»ºä¸€ä¸ª3Gçš„åˆ†åŒº
 	partprobe /dev/vda
 	targetcli
 	>ls /
@@ -527,7 +527,7 @@ Root ÃÜÂë£ºredhat
 	
 	
 	
-20. ÅäÖÃ iSCSI µÄ¿Í»§¶Ë ÅäÖÃsystem2 Ê¹ÆäÄÜÁ¬½ÓÔÚsystem1 µÄÉÏÌá¹©µÄ iqn.2014-09.com.example.domain11:system1 ²¢·ûºÏÒÔÏÂÒªÇó£º iSCSI Éè±¸ÔÚÏµÍ³Æô¶¯µÄÆÚ¼ä×Ô¶¯¼ÓÔØ ¿éÉè±¸ iSCSI ÉÏ°üº¬Ò»¸ö´óĞ¡Îª 1700MiB µÄ·ÖÇø£¬²¢¸ñÊ½»¯Îª xfs ´Ë·ÖÇø¹ÒÔØÔÚ /mnt/data ÉÏ Í¬Ê±ÔÚÏµÍ³Æô¶¯µÄÆÚ¼ä×Ô¶¯¹ÒÔØ
+20. é…ç½® iSCSI çš„å®¢æˆ·ç«¯ é…ç½®system2 ä½¿å…¶èƒ½è¿æ¥åœ¨system1 çš„ä¸Šæä¾›çš„ iqn.2014-09.com.example.domain11:system1 å¹¶ç¬¦åˆä»¥ä¸‹è¦æ±‚ï¼š iSCSI è®¾å¤‡åœ¨ç³»ç»Ÿå¯åŠ¨çš„æœŸé—´è‡ªåŠ¨åŠ è½½ å—è®¾å¤‡ iSCSI ä¸ŠåŒ…å«ä¸€ä¸ªå¤§å°ä¸º 1700MiB çš„åˆ†åŒºï¼Œå¹¶æ ¼å¼åŒ–ä¸º xfs æ­¤åˆ†åŒºæŒ‚è½½åœ¨ /mnt/data ä¸Š åŒæ—¶åœ¨ç³»ç»Ÿå¯åŠ¨çš„æœŸé—´è‡ªåŠ¨æŒ‚è½½
 	
 	yum list iscsi*
 	yum install iscsi-initiator-utils.x86_64
@@ -540,22 +540,22 @@ Root ÃÜÂë£ºredhat
 	cat /proc/partitions
 	iscsiadm -m discovery -t st -p 192.168.122.100 -l
 	cat /proc/partitions
-	fdisk /dev/sda  #Ê¹ÓÃsystem1¹²ÏíµÄsda1´´½¨1700MµÄ·ÖÇø
+	fdisk /dev/sda  #ä½¿ç”¨system1å…±äº«çš„sda1åˆ›å»º1700Mçš„åˆ†åŒº
 	partprobe /dev/sda
 	mkfs.xfs /dev/sda1
 	mkdir /mnt/data
 	vim /etc/fstab
 	+
 	/dev/sda1 /mnt/data xfs defaults,_netdev 0 0
-	#µ±´æÔÚ¶à¸öÔ¶³Ì´æ´¢Ê±£¬±ØĞëÓÃUUIDÎ¨Ò»±êÊ¶·û½øĞĞ¹ÒÔØ£¬²»È»ÎÄ¼ş»á³öÏÖ»ìÂÒ£¬
+	#å½“å­˜åœ¨å¤šä¸ªè¿œç¨‹å­˜å‚¨æ—¶ï¼Œå¿…é¡»ç”¨UUIDå”¯ä¸€æ ‡è¯†ç¬¦è¿›è¡ŒæŒ‚è½½ï¼Œä¸ç„¶æ–‡ä»¶ä¼šå‡ºç°æ··ä¹±ï¼Œ
 	#blkid | grep /dev/sda1
-	#UUID=eb¡­¡­¡­¡­¡­¡­-ad6 /iscsi xfs defaults,_netdev 0 0 
+	#UUID=ebâ€¦â€¦â€¦â€¦â€¦â€¦-ad6 /iscsi xfs defaults,_netdev 0 0 
 	wq
 	mount -a
 	df -hT
 
 	
-21. ÅäÖÃÒ»¸öÊı¾İ¿â ÔÚ system1 ÉÏ´´½¨Ò»¸ö MariaDB Êı¾İ¿â, ÃûÎª Contacts £¬²¢·ûºÏÒÔÏÂÌõ¼ş£º Êı ¾İ ¿â Ó¦ ¸Ã °ü º¬ À´ ×Ô Êı ¾İ ¿â ¸´ ÖÆ µÄ ÄÚ Èİ £¬ ¸´ ÖÆ ÎÄ ¼ş µÄ URL Îª http://rhgls.rhce.cc/materials/users.mdb ¡£ Êı¾İ¿âÖ»ÄÜ±» localhost ·ÃÎÊ¡£ ³ıÁË root ÓÃ»§, ´ËÊı¾İ¿âÖ»ÄÜ±»ÓÃ»§ Luigi ²éÑ¯¡£ ´ËÓÃ»§ÃÜÂëÎª redhat¡£ root ÓÃ»§µÄÃÜÂëÎª redhat £¬ Í¬Ê±²»ÔÊĞí¿ÕÃÜÂëµÇÂ¼¡£
+21. é…ç½®ä¸€ä¸ªæ•°æ®åº“ åœ¨ system1 ä¸Šåˆ›å»ºä¸€ä¸ª MariaDB æ•°æ®åº“, åä¸º Contacts ï¼Œå¹¶ç¬¦åˆä»¥ä¸‹æ¡ä»¶ï¼š æ•° æ® åº“ åº” è¯¥ åŒ… å« æ¥ è‡ª æ•° æ® åº“ å¤ åˆ¶ çš„ å†… å®¹ ï¼Œ å¤ åˆ¶ æ–‡ ä»¶ çš„ URL ä¸º http://rhgls.rhce.cc/materials/users.mdb ã€‚ æ•°æ®åº“åªèƒ½è¢« localhost è®¿é—®ã€‚ é™¤äº† root ç”¨æˆ·, æ­¤æ•°æ®åº“åªèƒ½è¢«ç”¨æˆ· Luigi æŸ¥è¯¢ã€‚ æ­¤ç”¨æˆ·å¯†ç ä¸º redhatã€‚ root ç”¨æˆ·çš„å¯†ç ä¸º redhat ï¼Œ åŒæ—¶ä¸å…è®¸ç©ºå¯†ç ç™»å½•ã€‚
 	
 	yum install mariadb mariadb-server -y
 	systemctl start mariadb
@@ -574,9 +574,9 @@ Root ÃÜÂë£ºredhat
 	mysql
  
 	
-22. Êı¾İ¿â²éÑ¯ ÔÚÏµÍ³ system1 ÉÏÊ¹ÓÃÊı¾İ¿â Contacts £¬ ²¢Ê¹ÓÃÏàÓ¦µÄ SQL ²éÑ¯ÒÔ»Ø´ğÏÂÁĞÎÊÌâ£º
-ÃÜÂëÊÇ tangerine µÄÈËµÄÃû×Ö? 
-ÓĞ¶àÉÙÈËµÄĞÕÃûÊÇ John Í¬Ê±¾Ó×¡ÔÚ Santa Clara?   (Ìî¿ÕÌâ)
+22. æ•°æ®åº“æŸ¥è¯¢ åœ¨ç³»ç»Ÿ system1 ä¸Šä½¿ç”¨æ•°æ®åº“ Contacts ï¼Œ å¹¶ä½¿ç”¨ç›¸åº”çš„ SQL æŸ¥è¯¢ä»¥å›ç­”ä¸‹åˆ—é—®é¢˜ï¼š
+å¯†ç æ˜¯ tangerine çš„äººçš„åå­—? 
+æœ‰å¤šå°‘äººçš„å§“åæ˜¯ John åŒæ—¶å±…ä½åœ¨ Santa Clara?   (å¡«ç©ºé¢˜)
 	
 	mysql 
 	>show tables;
